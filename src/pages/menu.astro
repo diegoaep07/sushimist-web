@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FoodCard from '../components/FoodCard.astro';
+import { SITE_CONFIG, MENU } from '../config';
+---
+
+<Layout title={SITE_CONFIG.name}>
+	<section class="hero text-center">
+		<div class="container">
+			<h1>{SITE_CONFIG.name}</h1>
+			<p>{SITE_CONFIG.description}</p>
+		</div>
+	</section>
+
+	<section class="menu">
+		<div class="container">
+			<h2 class="section-title">Our Menu</h2>
+			<div class="menu-list">
+				{MENU.map((item) => (
+					<FoodCard 
+						id={item.id}
+						name={item.name}
+						description={item.description}
+						price={item.price}
+					/>
+				))}
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.hero {
+		padding: var(--space-lg) 0;
+		background: var(--card-bg);
+		border-bottom: 1px solid var(--border-color);
+	}
+	.hero h1 {
+		font-size: var(--h1-size);
+		margin-bottom: var(--space-xs);
+	}
+	.hero p {
+		color: var(--text-muted);
+	}
+	.menu {
+		padding: var(--space-lg) 0;
+	}
+	.section-title {
+		font-size: var(--h2-size);
+		margin-bottom: var(--space-md);
+		border-left: 4px solid var(--accent);
+		padding-left: var(--space-sm);
+	}
+</style>

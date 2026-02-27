@@ -1,0 +1,145 @@
+---
+import { SITE_CONFIG } from '../config';
+
+interface Props {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+}
+
+const { id, name, description, price } = Astro.props;
+---
+
+<article class="food-card" data-id={id} data-name={name} data-price={price}>
+  <div class="image-placeholder">
+    <span>{name}</span>
+  </div>
+  <div class="card-content">
+    <div class="card-header">
+      <h3>{name}</h3>
+      <span class="price">{SITE_CONFIG.currency}{price.toFixed(2)}</span>
+    </div>
+    <p>{description}</p>
+    <button class="add-to-cart-btn" data-id={id}>
+      Add to Cart
+    </button>
+  </div>
+</article>
+
+<script>
+  function setupAddToCartButtons() {
+    const buttons = document.querySelectorAll('.add-to-cart-btn');
+    
+    buttons.forEach(button => {
+      // Avoid duplicate listeners
+      if (button.getAttribute('data-listener')) return;
+      
+      button.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const card = target.closest('.food-card') as HTMLElement;
+        const id = card.dataset.id;
+        const name = card.dataset.name;
+        const price = card.dataset.price;
+
+        if (!id || !name || !price) return;
+
+        const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+        cart.push({ id, name, price: parseFloat(price) });
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+
+        // Dispatch event for Layout header to update
+        window.dispatchEvent(new Event('cart-updated'));
+
+        // Feedback
+        const originalText = target.textContent;
+        target.textContent = 'Added!';
+        target.classList.add('added');
+        setTimeout(() => {
+          target.textContent = originalText;
+          target.classList.remove('added');
+        }, 1000);
+      });
+      
+      button.setAttribute('data-listener', 'true');
+    });
+  }
+
+  // Initial setup
+  setupAddToCartButtons();
+  
+  // Re-setup if content changes (Astro transitions or dynamic loading)
+  document.addEventListener('astro:page-load', setupAddToCartButtons);
+</script>
+
+<style>
+  .food-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+
+  .image-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .card-content {
+    padding: var(--space-sm);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--space-xs);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .price {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  p {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+    margin-bottom: var(--space-sm);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .add-to-cart-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--primary);
+    color: var(--secondary);
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: var(--small-size);
+    transition: background 0.2s;
+  }
+
+  .add-to-cart-btn:active {
+    transform: scale(0.98);
+  }
+
+  .add-to-cart-btn.added {
+    background: #27ae60;
+  }
+</style>

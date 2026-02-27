@@ -1,0 +1,109 @@
+---
+import { SITE_CONFIG } from '../config';
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="main-footer">
+  <div class="container footer-content">
+    <p class="footer-logo">{SITE_CONFIG.name}</p>
+    <div class="footer-brand">
+      <p>&copy; {currentYear} {SITE_CONFIG.name}. All rights reserved.</p>
+    </div>
+    <div class="social-links">
+      <a href="#" aria-label="WhatsApp" class="social-link">WhatsApp</a>
+      <a href="#" aria-label="Instagram" class="social-link">Instagram</a>
+      <a href="#" aria-label="Twitter" class="social-link">Twitter</a>
+    </div>
+  </div>
+</footer>
+
+  <style>
+    .main-footer {
+      padding: var(--space-md) 0;
+      background: var(--primary);
+      color: var(--secondary);
+      margin-top: var(--space-lg);
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-sm);
+    }
+
+    .footer-logo {
+      font-size: 1.8rem; /* Larger font size for restaurant name */
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: var(--space-sm);
+      letter-spacing: -0.5px;
+    }
+
+    .footer-brand p {
+      font-size: var(--small-size);
+      color: var(--secondary);
+    }
+
+  <style>
+    .main-footer {
+      padding: var(--space-md) 0;
+      background: var(--primary);
+      color: var(--secondary);
+      margin-top: var(--space-lg);
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-sm);
+    }
+
+    .footer-logo {
+      font-size: 1.8rem; /* Larger font size for restaurant name */
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: var(--space-sm);
+      letter-spacing: -0.5px;
+    }
+
+    .footer-brand p {
+      font-size: var(--small-size);
+      color: var(--secondary);
+    }
+
+    .social-links {
+      display: flex;
+      flex-direction: column; /* Stack links vertically */
+      gap: var(--space-md); /* Vertical gap between links */
+      align-items: center; /* Center links horizontally within their container */
+      justify-content: center; /* Center links vertically if they were in a row and footer-content was column */
+    }
+
+    .social-link {
+      color: var(--secondary); /* Inherit footer text color */
+      text-decoration: none;
+      font-size: var(--small-size);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .social-link:hover {
+      color: var(--accent); /* Accent color on hover */
+      text-decoration: underline; /* Ensure underline on hover */
+    }
+
+    @media (min-width: 768px) {
+      .footer-content {
+        flex-direction: column; /* Changed to column for single-column style */
+        justify-content: center; /* Center content vertically in the column */
+        gap: var(--space-lg); /* More space between main elements */
+      }
+      .social-links {
+        align-items: center; /* Keep social links centered */
+      }
+    }
+  </style>

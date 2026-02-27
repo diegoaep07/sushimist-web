@@ -1,11 +1,68 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { SITE_CONFIG } from '../config';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={SITE_CONFIG.name}>
+  <section class="landing-hero">
+    <div class="container">
+      <h1>{SITE_CONFIG.name}</h1>
+      <p class="tagline">{SITE_CONFIG.description}</p>
+      <a href="/menu" class="btn-primary">View Our Menu</a>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  .landing-hero {
+    min-height: calc(100vh - 60px); /* Adjust based on header height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: var(--bg-color);
+    padding: var(--space-lg) var(--space-sm);
+  }
+
+  .landing-hero h1 {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: var(--space-sm);
+    line-height: 1.1;
+  }
+
+  .tagline {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+    max-width: 600px;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: var(--accent);
+    color: var(--secondary);
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background: var(--secondary);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+  }
+
+  /* Responsive adjustments */
+  @media (min-width: 768px) {
+    .landing-hero h1 {
+      font-size: 4rem;
+    }
+    .tagline {
+      font-size: 1.5rem;
+    }
+  }
+</style>

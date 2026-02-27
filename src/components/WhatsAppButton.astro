@@ -1,0 +1,67 @@
+---
+import { SITE_CONFIG } from '../config';
+
+interface Props {
+  className?: string;
+}
+
+const { className = '' } = Astro.props;
+---
+
+<button id="whatsapp-order-btn" class={`order-btn ${className}`}>
+  Order via WhatsApp
+</button>
+
+<script define:vars={{ whatsappNumber: SITE_CONFIG.whatsappNumber }}>
+  function setupWhatsAppButton() {
+    const btn = document.getElementById('whatsapp-order-btn');
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+      const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+      
+      if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+
+      const itemsList = cart.map(item => item.name).join(', ');
+      const message = `Hi, I want to order this: ${itemsList}`;
+      const encodedMessage = encodeURIComponent(message);
+      
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+      
+      window.open(whatsappUrl, '_blank');
+      
+      // Optional: Clear cart after order
+      // sessionStorage.removeItem('cart');
+      // window.dispatchEvent(new Event('cart-updated'));
+    });
+  }
+
+  setupWhatsAppButton();
+  document.addEventListener('astro:page-load', setupWhatsAppButton);
+</script>
+
+<style>
+  .order-btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background: #25d366; /* WhatsApp Green */
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: var(--radius);
+    text-align: center;
+    transition: filter 0.2s;
+  }
+
+  .order-btn:hover {
+    filter: brightness(0.9);
+  }
+
+  .order-btn:active {
+    transform: scale(0.98);
+  }
+</style>

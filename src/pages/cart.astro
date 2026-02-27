@@ -1,0 +1,192 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE_CONFIG } from '../config';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+---
+
+<Layout title={`Cart - ${SITE_CONFIG.name}`}>
+  <div class="container cart-page">
+    <h1>Your Order</h1>
+    
+    <div id="cart-container" class="cart-items-list">
+      <p class="loading">Loading your cart...</p>
+    </div>
+
+    <div id="cart-summary" class="cart-summary" style="display: none;">
+      <div class="summary-row total-row">
+        <span>Total</span>
+        <span id="cart-total">$0.00</span>
+      </div>
+      
+      <div class="actions">
+        <WhatsAppButton className="mt-lg" />
+        <button id="clear-cart" class="clear-btn">Clear Cart</button>
+      </div>
+    </div>
+
+    <div id="empty-cart-msg" style="display: none;" class="text-center mt-lg">
+      <p>Your cart is empty.</p>
+      <a href="/menu" class="browse-link">Browse Menu</a>
+    </div>
+  </div>
+</Layout>
+
+<script define:vars={{ currency: SITE_CONFIG.currency }}>
+  function renderCart() {
+    const container = document.getElementById('cart-container');
+    const summary = document.getElementById('cart-summary');
+    const emptyMsg = document.getElementById('empty-cart-msg');
+    const totalEl = document.getElementById('cart-total');
+    
+    if (!container || !summary || !emptyMsg || !totalEl) return;
+
+    const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+
+    if (cart.length === 0) {
+      container.style.display = 'none';
+      summary.style.display = 'none';
+      emptyMsg.style.display = 'block';
+      return;
+    }
+
+    emptyMsg.style.display = 'none';
+    container.style.display = 'block';
+    summary.style.display = 'block';
+
+    let total = 0;
+    container.innerHTML = cart.map((item, index) => {
+      total += item.price;
+      return `
+        <div class="cart-item">
+          <div class="item-info">
+            <span class="item-name">${item.name}</span>
+            <span class="item-price">${currency}${item.price.toFixed(2)}</span>
+          </div>
+          <button class="remove-item" data-index="${index}">Remove</button>
+        </div>
+      `;
+    }).join('');
+
+    totalEl.textContent = `${currency}${total.toFixed(2)}`;
+
+    // Setup remove buttons
+    document.querySelectorAll('.remove-item').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const index = parseInt(e.target.dataset.index);
+        const newCart = [...cart];
+        newCart.splice(index, 1);
+        sessionStorage.setItem('cart', JSON.stringify(newCart));
+        window.dispatchEvent(new Event('cart-updated'));
+        renderCart();
+      });
+    });
+  }
+
+  // Clear cart logic
+  const clearBtn = document.getElementById('clear-cart');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear your cart?')) {
+        sessionStorage.removeItem('cart');
+        window.dispatchEvent(new Event('cart-updated'));
+        renderCart();
+      }
+    });
+  }
+
+  // Initial render
+  renderCart();
+  
+  // Re-render on page load (Astro)
+  document.addEventListener('astro:page-load', renderCart);
+</script>
+
+<style>
+  .cart-page {
+    padding: var(--space-lg) var(--space-sm);
+  }
+
+  h1 {
+    font-size: var(--h2-size);
+    margin-bottom: var(--space-lg);
+    text-align: center;
+  }
+
+  .cart-items-list {
+    margin-bottom: var(--space-lg);
+  }
+
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .item-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item-name {
+    font-weight: 600;
+  }
+
+  .item-price {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+  }
+
+  .remove-item {
+    background: transparent;
+    color: var(--accent);
+    font-size: var(--small-size);
+    font-weight: 500;
+  }
+
+  .cart-summary {
+    background: var(--card-bg);
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+  }
+
+  .total-row {
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-top: 2px solid var(--text-color);
+    padding-top: var(--space-sm);
+    margin-top: var(--space-sm);
+  }
+
+  .actions {
+    margin-top: var(--space-lg);
+  }
+
+  .clear-btn {
+    display: block;
+    width: 100%;
+    background: transparent;
+    color: var(--text-muted);
+    margin-top: var(--space-sm);
+    font-size: var(--small-size);
+    padding: 0.5rem;
+  }
+
+  .browse-link {
+    display: inline-block;
+    margin-top: var(--space-sm);
+    padding: 0.5rem 1.5rem;
+    background: var(--primary);
+    color: var(--secondary);
+    border-radius: var(--radius);
+    font-weight: 600;
+  }
+</style>
