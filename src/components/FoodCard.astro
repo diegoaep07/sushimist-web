@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { SITE_CONFIG } from '../config';
 
 interface Props {
@@ -6,14 +7,32 @@ interface Props {
   name: string;
   description: string;
   price: number;
+  img?: string;
 }
 
-const { id, name, description, price } = Astro.props;
+const { id, name, description, price, img } = Astro.props;
+
+// Load all images from the menu directory
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/menu/*.{jpeg,jpg,png,gif,webp}');
+const imagePath = img ? `/src/assets/menu/${img}` : null;
+const hasImage = imagePath && images[imagePath];
 ---
 
 <article class="food-card" data-id={id} data-name={name} data-price={price}>
-  <div class="image-placeholder">
-    <span>{name}</span>
+  <div class="card-image">
+    {hasImage ? (
+      <Image 
+        src={images[imagePath!]()} 
+        alt={name} 
+        width={400} 
+        height={225}
+        class="plate-img"
+      />
+    ) : (
+      <div class="image-placeholder">
+        <span>{name}</span>
+      </div>
+    )}
   </div>
   <div class="card-content">
     <div class="card-header">
@@ -81,10 +100,27 @@ const { id, name, description, price } = Astro.props;
     transition: transform 0.2s ease;
   }
 
-  .image-placeholder {
+  .card-image {
     width: 100%;
     aspect-ratio: 16 / 9;
+    overflow: hidden;
     background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+  }
+
+  .plate-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .food-card:hover .plate-img {
+    transform: scale(1.05);
+  }
+
+  .image-placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
