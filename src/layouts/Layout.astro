@@ -20,16 +20,41 @@ const { title = SITE_CONFIG.name } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body class={Astro.url.pathname === '/' ? 'landing-page' : ''}>
 		<header class="main-header">
 			<div class="container header-content">
 				<a href="/" class="logo">{SITE_CONFIG.name}</a>
-				<nav>
-					<div class="nav-links">
-						<a href="/menu" class="menu-link">Menu</a>
-						<a href="/cart" class="cart-link">
-							Cart (<span id="cart-count">0</span>)
-						</a>
+				<nav class="main-nav">
+					<!-- Desktop navigation -->
+						<div class="nav-links desktop-nav">
+							{Astro.url.pathname !== '/menu' && (
+								<a href="/menu" class="menu-link">Menu</a>
+							)}
+							{Astro.url.pathname !== '/cart' && (
+								<a href="/cart" class="cart-link">
+									Cart (<span id="cart-count">0</span>)
+								</a>
+							)}
+						</div>
+
+					<!-- Hamburger menu for mobile, conditionally shown on landing page -->
+					{Astro.url.pathname === '/' && (
+						<button id="hamburger-btn" class="hamburger-btn">
+							<span class="hamburger-icon"></span>
+							<span class="hamburger-icon"></span>
+							<span class="hamburger-icon"></span>
+						</button>
+					)}
+					
+					<!-- Mobile navigation overlay -->
+					<div id="mobile-nav-overlay" class="mobile-nav-overlay">
+						<button id="close-mobile-nav" class="close-mobile-nav">&times;</button>
+						<div class="mobile-nav-links">
+							<a href="/menu" class="menu-link">Menu</a>
+							<a href="/cart" class="cart-link">
+								Cart (<span id="mobile-cart-count">0</span>)
+							</a>
+						</div>
 					</div>
 				</nav>
 			</div>
@@ -44,10 +69,42 @@ const { title = SITE_CONFIG.name } = Astro.props;
 			function updateCartCount() {
 				const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
 				const countElement = document.getElementById('cart-count');
+				const mobileCountElement = document.getElementById('mobile-cart-count');
+
 				if (countElement) {
 					countElement.textContent = cart.length.toString();
 				}
+				if (mobileCountElement) {
+					mobileCountElement.textContent = cart.length.toString();
+				}
 			}
+
+			// Hamburger menu functionality
+			const hamburgerBtn = document.getElementById('hamburger-btn');
+			const closeMobileNavBtn = document.getElementById('close-mobile-nav');
+			const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+
+			if (hamburgerBtn && mobileNavOverlay) {
+				hamburgerBtn.addEventListener('click', () => {
+					mobileNavOverlay.classList.add('active');
+					document.body.style.overflow = 'hidden'; // Prevent scrolling when nav is open
+				});
+			}
+
+			if (closeMobileNavBtn && mobileNavOverlay) {
+				closeMobileNavBtn.addEventListener('click', () => {
+					mobileNavOverlay.classList.remove('active');
+					document.body.style.overflow = '';
+				});
+			}
+
+			// Close mobile nav when a link is clicked
+			mobileNavOverlay?.querySelectorAll('a').forEach(link => {
+				link.addEventListener('click', () => {
+					mobileNavOverlay.classList.remove('active');
+					document.body.style.overflow = '';
+				});
+			});
 
 			// Listen for cart updates
 			window.addEventListener('cart-updated', updateCartCount);
@@ -104,19 +161,136 @@ const { title = SITE_CONFIG.name } = Astro.props;
 				border: 1px solid var(--primary);
 			}
 
-			/* Adjustments for very small screens if needed */
-			@media (max-width: 400px) {
+			/* Hamburger Button */
+			.hamburger-btn {
+				display: none; /* Hidden by default */
+				width: 30px;
+				height: 20px;
+				background: none;
+				border: none;
+				cursor: pointer;
+				flex-direction: column;
+				justify-content: space-between;
+				padding: 0;
+			}
+
+			.hamburger-icon {
+				display: block;
+				width: 100%;
+				height: 2px;
+				background: var(--primary);
+				border-radius: 2px;
+			}
+
+			/* Mobile Navigation Overlay */
+			.mobile-nav-overlay {
+				display: flex;
+				flex-direction: column;
+				position: fixed;
+				top: 0;
+				left: -100%; /* Off-screen by default */
+				width: 100%;
+				height: 100%;
+				background: var(--bg-color);
+				z-index: 200; /* Above header */
+				transition: left 0.3s ease-in-out;
+				padding: var(--space-lg);
+				box-sizing: border-box;
+			}
+
+			.mobile-nav-overlay.active {
+				left: 0; /* Slide in */
+			}
+
+			.close-mobile-nav {
+				font-size: 2.5rem;
+				background: none;
+				border: none;
+				color: var(--primary);
+				position: absolute;
+				top: var(--space-sm);
+				right: var(--space-sm);
+				cursor: pointer;
+			}
+
+			.mobile-nav-links {
+				display: flex;
+				flex-direction: column;
+				gap: var(--space-md);
+				margin-top: var(--space-lg);
+				align-items: flex-start;
+			}
+
+			.mobile-nav-links .menu-link,
+			.mobile-nav-links .cart-link {
+				font-size: 1.5rem; /* Larger links for mobile menu */
+				width: 100%;
+				text-align: left;
+				padding: var(--space-sm) 0;
+				background: transparent; /* Override button background */
+				color: var(--primary); /* Use primary text color */
+				border: none; /* Remove button border */
+				border-radius: 0;
+			}
+
+			.mobile-nav-links .cart-link {
+				border: 1px solid var(--primary);
+				border-radius: var(--radius);
+				padding-left: var(--space-sm);
+			}
+
+			/* Responsive adjustments */
+			/* Default mobile styles for desktop-nav when on non-landing pages */
+			.desktop-nav {
+				display: flex; /* Always show desktop-nav by default (mobile-first for non-landing pages) */
+				gap: var(--space-xs);
+				flex-wrap: wrap;
+				justify-content: flex-end;
+			}
+
+			@media (max-width: 767px) {
+				.landing-page .desktop-nav {
+					display: none; /* Hide desktop nav ONLY on landing page mobile */
+				}
+
+				.landing-page .hamburger-btn {
+					display: flex; /* Show hamburger ONLY on landing page mobile */
+				}
+
+				/* For other mobile pages, .desktop-nav remains display: flex */
 				.header-content {
-					flex-direction: column;
-					align-items: flex-start;
+					flex-direction: row; /* Keep logo and nav in a row */
+					align-items: center;
+					justify-content: space-between;
 				}
+			}
+
+			@media (min-width: 768px) {
+				.hamburger-btn {
+					display: none; /* Hide hamburger on desktop */
+				}
+
+				.mobile-nav-overlay {
+					display: none; /* Hide mobile overlay on desktop */
+				}
+
+				.desktop-nav {
+					display: flex; /* Show desktop nav on desktop */
+				}
+
+				.header-content {
+					flex-direction: row; /* Ensure row direction for desktop header */					
+					flex-wrap: nowrap;
+					justify-content: space-between;
+				}
+
 				.nav-links {
-					width: 100%;
-					justify-content: space-around;
-					margin-top: var(--space-sm);
+					width: auto;
+					margin-top: 0;
 				}
+
 				.logo {
-					margin-bottom: var(--space-sm);
+					margin-bottom: 0;
 				}
 			}
 		</style>
