@@ -1,0 +1,22 @@
+[build]
+  command = """
+    echo "Cloning public repository..."
+    git clone https://github.com/sushimist/sushimist-menu-temp.git ./temp-menu-repo
+    
+    echo "Copying config file..."
+    cp ./temp-menu-repo/config.ts ./src/config.ts
+    
+    echo "Copying assets..."
+    mkdir -p ./src/assets/menu
+    cp -r ./temp-menu-repo/assets/menu/* ./src/assets/menu/
+    
+    echo "Cleaning up temporary repository clone..."
+    rm -rf ./temp-menu-repo
+
+    echo "Starting main build command..."
+    npm run build
+  """
+  
+  publish = "build"
+
+[context.production.environment]
