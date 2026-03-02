@@ -4,40 +4,40 @@ import { SITE_CONFIG } from '../config';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 ---
 
-<Layout title={`Cart - ${SITE_CONFIG.name}`}>
+<Layout title={`Carrito - ${SITE_CONFIG.name}`}>
   <div class="container cart-page">
-    <h1>Your Order</h1>
+    <h1>Tu Pedido</h1>
     
     <div id="cart-container" class="cart-items-list">
-      <p class="loading">Loading your cart...</p>
+      <p class="loading">Cargando tu carrito...</p>
     </div>
 
     <div id="cart-summary" class="cart-summary" style="display: none;">
       <div class="summary-row total-row">
         <span>Total</span>
-        <span id="cart-total">$0.00</span>
+        <span id="cart-total">$0</span>
       </div>
       
       <div class="order-form mt-lg">
         <div class="form-group">
-          <label for="delivery-address">Delivery Address *</label>
-          <input type="text" id="delivery-address" placeholder="Street name, number, apartment..." required />
+          <label for="delivery-address">Dirección de Envío *</label>
+          <input type="text" id="delivery-address" placeholder="Nombre de la calle, número, apartamento..." required />
         </div>
         <div class="form-group">
-          <label for="special-instructions">Special Instructions</label>
-          <textarea id="special-instructions" placeholder="e.g. No onions, buzz apartment 4B..."></textarea>
+          <label for="special-instructions">Instrucciones Especiales</label>
+          <textarea id="special-instructions" placeholder="Ej: Sin cebolla, tocar 4B..."></textarea>
         </div>
       </div>
 
       <div class="actions">
         <WhatsAppButton className="mt-lg disabled" />
-        <button id="clear-cart" class="clear-btn">Clear Cart</button>
+        <button id="clear-cart" class="clear-btn">Vaciar Carrito</button>
       </div>
     </div>
 
     <div id="empty-cart-msg" style="display: none;" class="text-center mt-lg">
-      <p>Your cart is empty.</p>
-      <a href="/menu" class="browse-link">Browse Menu</a>
+      <p>Tu carrito está vacío.</p>
+      <a href="/menu" class="browse-link">Explorar Menú</a>
     </div>
   </div>
 </Layout>
@@ -71,14 +71,14 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
         <div class="cart-item">
           <div class="item-info">
             <span class="item-name">${item.name}</span>
-            <span class="item-price">${currency}${item.price.toFixed(2)}</span>
+            <span class="item-price">${currency}${item.price.toLocaleString()}</span>
           </div>
-          <button class="remove-item" data-index="${index}">Remove</button>
+          <button class="remove-item" data-index="${index}">Eliminar</button>
         </div>
       `;
     }).join('');
 
-    totalEl.textContent = `${currency}${total.toFixed(2)}`;
+    totalEl.textContent = `${currency}${total.toLocaleString()}`;
 
     // Handle form input and button activation
     const addressInput = document.getElementById('delivery-address');
@@ -125,7 +125,7 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
   const clearBtn = document.getElementById('clear-cart');
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
-      if (confirm('Are you sure you want to clear your cart?')) {
+      if (confirm('¿Estás seguro de que quieres vaciar tu carrito?')) {
         sessionStorage.removeItem('cart');
         window.dispatchEvent(new Event('cart-updated'));
         renderCart();

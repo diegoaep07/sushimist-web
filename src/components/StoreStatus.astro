@@ -16,11 +16,11 @@ import { SITE_CONFIG } from '../config';
     const currentHour = now.getHours();
 
     if (currentHour >= openingHours.start && currentHour < openingHours.end) {
-      statusText.textContent = "● Delivering Now";
+      statusText.textContent = "● Abierto Ahora";
       container.classList.add('open');
       container.classList.remove('closed');
     } else {
-      statusText.textContent = "○ We're Closed";
+      statusText.textContent = "○ Cerrado";
       container.classList.add('closed');
       container.classList.remove('open');
     }

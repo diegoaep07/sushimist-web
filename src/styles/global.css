@@ -1,12 +1,12 @@
 :root {
-  /* Colors */
-  --primary: #000000;
+  /* Colors - SUSHI MIST Aesthetic */
+  --primary: #262626;
   --secondary: #ffffff;
-  --accent: #e63946;
-  --bg-color: #fafafa;
-  --text-color: #1a1a1a;
-  --text-muted: #666666;
-  --border-color: #eeeeee;
+  --accent: #d32f2f; /* A classic sushi red */
+  --bg-color: #fdf6e3; /* Light beige/solarized light */
+  --text-color: #333333;
+  --text-muted: #555555;
+  --border-color: #e0d8c0;
   --card-bg: #ffffff;
   
   /* Spacing */
@@ -18,8 +18,9 @@
 
   /* Typography */
   --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --h1-size: 2rem;
-  --h2-size: 1.5rem;
+  --font-heading: "Georgia", serif;
+  --h1-size: 2.5rem;
+  --h2-size: 1.75rem;
   --body-size: 1rem;
   --small-size: 0.875rem;
 }
@@ -36,6 +37,12 @@ body {
   color: var(--text-color);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--primary);
 }
 
 img {

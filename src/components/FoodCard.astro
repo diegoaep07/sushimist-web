@@ -37,11 +37,11 @@ const hasImage = imagePath && images[imagePath];
   <div class="card-content">
     <div class="card-header">
       <h3>{name}</h3>
-      <span class="price">{SITE_CONFIG.currency}{price.toFixed(2)}</span>
+      <span class="price">{SITE_CONFIG.currency}{price.toLocaleString()}</span>
     </div>
     <p>{description}</p>
     <button class="add-to-cart-btn" data-id={id}>
-      Add to Cart
+      Agregar
     </button>
   </div>
 </article>

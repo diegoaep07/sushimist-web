@@ -8,21 +8,24 @@ import { SITE_CONFIG } from '../config';
   <StoreStatus />
   <section class="landing-hero">
     <div class="container">
-      <h1>{SITE_CONFIG.name}</h1>
+      <div class="logo-container">
+        <img src="/images/sushi-mist-logo.svg" alt="SUSHI MIST" class="sushi-mist-logo"/>
+      </div>
       <p class="tagline">{SITE_CONFIG.description}</p>
-      <a href="/menu" class="btn-primary">View Our Menu</a>
+      <a href="/menu" class="btn-primary">Ver Nuestro Menú</a>
     </div>
+    <div class="hero-background-image"></div>
   </section>
 
   <section class="delivery-info">
     <div class="container">
       <div class="info-grid">
         <div class="info-card">
-          <h3>Opening Hours</h3>
+          <h3>Horarios</h3>
           <p>{SITE_CONFIG.openingHours.display}</p>
         </div>
         <div class="info-card">
-          <h3>Delivery Area</h3>
+          <h3>Zona de Entrega</h3>
           <p>{SITE_CONFIG.deliveryArea}</p>
         </div>
       </div>
@@ -40,13 +43,40 @@ import { SITE_CONFIG } from '../config';
     text-align: center;
     background: var(--bg-color);
     padding: var(--space-lg) var(--space-sm);
+    position: relative; /* Needed for absolute positioning of background image */
+    overflow: hidden; /* Hide overflowing parts of the background image */
+  }
+
+  .hero-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/sushi-mist-hero-bg.svg'); /* Replace with actual image path */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3; /* Adjust as needed */
+    z-index: 0; /* Behind other content */
+  }
+
+  .landing-hero .container {
+    position: relative;
+    z-index: 1; /* Ensure content is above the background image */
+  }
+
+  .logo-container {
+    margin-bottom: var(--space-md);
+  }
+
+  .sushi-mist-logo {
+    width: 250px; /* Adjust size as needed */
+    height: auto;
+    margin: 0 auto;
   }
 
   .landing-hero h1 {
-    font-size: 3rem;
-    color: var(--primary);
-    margin-bottom: var(--space-sm);
-    line-height: 1.1;
+    display: none; /* Hide the h1 tag as the logo image will display the name */
   }
 
   .tagline {

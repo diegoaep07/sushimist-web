@@ -1,0 +1,72 @@
+{
+  "context": {
+    "goal": "Separate website code from client-editable menu data and images into two repositories for simplified client updates and Netlify deployment.",
+    "repository_structure": {
+      "sushimist_web": {
+        "description": "Private repository for the main Astro application code.",
+        "content": [
+          "Main Astro application code (src/pages, src/components, src/layouts, src/styles, etc.)",
+          "Branding images (public/images/)"
+        ],
+        "exclusions": [
+          "src/config.ts",
+          "src/assets/menu/"
+        ],
+        "deployment": "Connected to Netlify."
+      },
+      "sushimist_menu": {
+        "description": "Public repository for client-editable menu data and images.",
+        "content": [
+          "config.ts (menu data)",
+          "assets/menu/ (menu images)"
+        ]
+      }
+    },
+    "integration_strategy": {
+      "tool": "Netlify build process",
+      "steps": [
+        "Clone `sushimist-menu` repository during build.",
+        "Copy `config.ts` into `sushimist-web/src/config.ts`.",
+        "Copy `assets/menu/` into `sushimist-web/src/assets/menu/`.",
+        "Run Astro build (`npm run build`)."
+      ]
+    }
+  },
+  "current_task": {
+    "objective": "Prepare the local environment for the two-repository structure.",
+    "subtasks": [
+      {
+        "id": "fix_directory_creation",
+        "description": "Correctly create the necessary directory structure for the public menu repository content.",
+        "command_to_run": "mkdir -p sushimist-menu-temp/assets/menu",
+        "expected_outcome": "Directory `sushimist-menu-temp/assets/menu` is created."
+      },
+      {
+        "id": "move_config_file",
+        "description": "Move the current `src/config.ts` to the temporary directory for the public menu repository.",
+        "command_to_run": "mv src/config.ts sushimist-menu-temp/config.ts",
+        "expected_outcome": "`src/config.ts` is moved to `sushimist-menu-temp/config.ts`."
+      },
+      {
+        "id": "clean_main_repo",
+        "description": "Remove `src/config.ts` from the main `sushimist-web` repository.",
+        "command_to_run": "rm src/config.ts",
+        "expected_outcome": "`src/config.ts` is removed from the main project."
+      },
+      {
+        "id": "update_gitignore",
+        "description": "Add `src/config.ts` and `src/assets/menu/` to `.gitignore` in the `sushimist-web` repository to prevent accidental commits.",
+        "target_file": ".gitignore",
+        "action": "Append new lines",
+        "content_to_add": [
+          "/src/config.ts",
+          "/src/assets/menu/"
+        ]
+      },
+      {
+        "id": "provide_netlify_instructions",
+        "description": "Generate detailed instructions for setting up Netlify to pull from two repositories."
+      }
+    ]
+  }
+}
