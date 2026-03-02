@@ -1,8 +1,9 @@
 [build]
   command = """
     echo "Downloading public repository..."
-    # Download the public repository as a zip file using the corrected URL
-    curl -L -o sushimist-menu-temp.zip https://github.com/sushimist-menu/sushimist_menu.git/archive/refs/heads/main.zip
+    # Download the public repository's main branch as a zip file
+    # Using a slightly different URL format for the zip archive
+    curl -L -o sushimist-menu-temp.zip https://github.com/sushimist-menu/sushimist_menu/archive/refs/heads/main.zip
     
     echo "Extracting repository..."
     # Extract the zip file. The directory name inside the zip will be 'sushimist_menu-main'
