@@ -18,8 +18,19 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
         <span id="cart-total">$0.00</span>
       </div>
       
+      <div class="order-form mt-lg">
+        <div class="form-group">
+          <label for="delivery-address">Delivery Address *</label>
+          <input type="text" id="delivery-address" placeholder="Street name, number, apartment..." required />
+        </div>
+        <div class="form-group">
+          <label for="special-instructions">Special Instructions</label>
+          <textarea id="special-instructions" placeholder="e.g. No onions, buzz apartment 4B..."></textarea>
+        </div>
+      </div>
+
       <div class="actions">
-        <WhatsAppButton className="mt-lg" />
+        <WhatsAppButton className="mt-lg disabled" />
         <button id="clear-cart" class="clear-btn">Clear Cart</button>
       </div>
     </div>
@@ -68,6 +79,34 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
     }).join('');
 
     totalEl.textContent = `${currency}${total.toFixed(2)}`;
+
+    // Handle form input and button activation
+    const addressInput = document.getElementById('delivery-address');
+    const instructionsInput = document.getElementById('special-instructions');
+    const orderBtn = document.getElementById('whatsapp-order-btn');
+
+    const updateOrderDetails = () => {
+      const address = addressInput.value.trim();
+      const instructions = instructionsInput.value.trim();
+      
+      sessionStorage.setItem('delivery_address', address);
+      sessionStorage.setItem('special_instructions', instructions);
+
+      if (address.length > 5) {
+        orderBtn?.classList.remove('disabled');
+      } else {
+        orderBtn?.classList.add('disabled');
+      }
+    };
+
+    if (addressInput && !addressInput.dataset.listenerAdded) {
+      addressInput.addEventListener('input', updateOrderDetails);
+      addressInput.dataset.listenerAdded = 'true';
+    }
+    if (instructionsInput && !instructionsInput.dataset.listenerAdded) {
+      instructionsInput.addEventListener('input', updateOrderDetails);
+      instructionsInput.dataset.listenerAdded = 'true';
+    }
 
     // Setup remove buttons
     document.querySelectorAll('.remove-item').forEach(btn => {
@@ -150,6 +189,48 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
     padding: var(--space-md);
     border-radius: var(--radius);
     border: 1px solid var(--border-color);
+  }
+
+  .order-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-color);
+    border-radius: var(--radius);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .form-group label {
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: var(--body-size);
+  }
+
+  .form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  :global(.order-btn.disabled) {
+    background: #ccc !important;
+    pointer-events: none;
+    opacity: 0.7;
   }
 
   .summary-row {

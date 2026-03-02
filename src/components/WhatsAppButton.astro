@@ -19,6 +19,8 @@ const { className = '' } = Astro.props;
 
     btn.addEventListener('click', () => {
       const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+      const address = sessionStorage.getItem('delivery_address') || '';
+      const instructions = sessionStorage.getItem('special_instructions') || '';
       
       if (cart.length === 0) {
         alert('Your cart is empty!');
@@ -26,7 +28,13 @@ const { className = '' } = Astro.props;
       }
 
       const itemsList = cart.map(item => item.name).join(', ');
-      const message = `Hi, I want to order this: ${itemsList}`;
+      let message = `Hi, I want to order this: ${itemsList}.`;
+      
+      message += `\n\n📍 Delivery Address: ${address}`;
+      if (instructions) {
+        message += `\n\n📝 Note: ${instructions}`;
+      }
+      
       const encodedMessage = encodeURIComponent(message);
       
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;

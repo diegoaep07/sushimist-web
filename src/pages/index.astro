@@ -1,9 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import StoreStatus from '../components/StoreStatus.astro';
 import { SITE_CONFIG } from '../config';
 ---
 
 <Layout title={SITE_CONFIG.name}>
+  <StoreStatus />
   <section class="landing-hero">
     <div class="container">
       <h1>{SITE_CONFIG.name}</h1>
@@ -11,11 +13,26 @@ import { SITE_CONFIG } from '../config';
       <a href="/menu" class="btn-primary">View Our Menu</a>
     </div>
   </section>
+
+  <section class="delivery-info">
+    <div class="container">
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>Opening Hours</h3>
+          <p>{SITE_CONFIG.openingHours.display}</p>
+        </div>
+        <div class="info-card">
+          <h3>Delivery Area</h3>
+          <p>{SITE_CONFIG.deliveryArea}</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>
 
 <style>
   .landing-hero {
-    min-height: calc(100vh - 60px); /* Adjust based on header height */
+    min-height: 70vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -57,6 +74,35 @@ import { SITE_CONFIG } from '../config';
     border: 1px solid var(--primary);
   }
 
+  .delivery-info {
+    padding: var(--space-lg) 0;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .info-grid {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .info-card {
+    text-align: center;
+    padding: var(--space-md);
+  }
+
+  .info-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--space-xs);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+  }
+
+  .info-card p {
+    color: var(--text-muted);
+  }
+
   /* Responsive adjustments */
   @media (min-width: 768px) {
     .landing-hero h1 {
@@ -64,6 +110,9 @@ import { SITE_CONFIG } from '../config';
     }
     .tagline {
       font-size: 1.5rem;
+    }
+    .info-grid {
+      grid-template-columns: 1fr 1fr;
     }
   }
 </style>

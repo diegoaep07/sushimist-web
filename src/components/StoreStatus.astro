@@ -1,0 +1,60 @@
+---
+import { SITE_CONFIG } from '../config';
+---
+
+<div id="store-status" class="store-status">
+  <span id="status-text">Checking status...</span>
+</div>
+
+<script define:vars={{ openingHours: SITE_CONFIG.openingHours }}>
+  function updateStatus() {
+    const statusText = document.getElementById('status-text');
+    const container = document.getElementById('store-status');
+    if (!statusText || !container) return;
+
+    const now = new Date();
+    const currentHour = now.getHours();
+
+    if (currentHour >= openingHours.start && currentHour < openingHours.end) {
+      statusText.textContent = "● Delivering Now";
+      container.classList.add('open');
+      container.classList.remove('closed');
+    } else {
+      statusText.textContent = "○ We're Closed";
+      container.classList.add('closed');
+      container.classList.remove('open');
+    }
+  }
+
+  // Initial check
+  updateStatus();
+  // Check every minute
+  setInterval(updateStatus, 60000);
+  document.addEventListener('astro:page-load', updateStatus);
+</script>
+
+<style>
+  .store-status {
+    position: fixed;
+    top: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+
+  .store-status.open {
+    background: #27ae60;
+    color: white;
+  }
+
+  .store-status.closed {
+    background: #e63946;
+    color: white;
+  }
+</style>

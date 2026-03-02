@@ -1,8 +1,18 @@
 export const SITE_CONFIG = {
-  name: 'Restaurant Name',
-  description: 'A cool slogan',
-  whatsappNumber: '123456789', // Format: Country code + number without + or 00
+  name: 'Minimal Bistro',
+  description: 'Fresh food delivered to your door.',
+  whatsappNumber: '1234567890', // Format: Country code + number without + or 00
   currency: '$',
+  deliveryArea: 'Free delivery within 5km. Minimum order $15.',
+  openingHours: {
+    start: 12, // 12 PM
+    end: 22,   // 10 PM
+    display: 'Mon - Sun: 12:00 PM - 10:00 PM',
+  },
+  // SEO & Open Graph
+  siteUrl: 'https://example.com', // IMPORTANT: Change this to your live site URL
+  defaultMetaDescription: 'Your favorite dishes delivered fresh to your door.',
+  defaultOgImage: '/og-image.png', // Path to a default social sharing image
 };
 
 export const MENU = [
