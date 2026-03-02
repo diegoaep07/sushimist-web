@@ -1,17 +1,25 @@
 [build]
   command = """
-    echo "Cloning public repository..."
-    git clone https://github.com/sushimist/sushimist-menu-temp.git ./temp-menu-repo
+    echo "Downloading public repository..."
+    # Download the public repository as a zip file using the corrected URL
+    curl -L -o sushimist-menu-temp.zip https://github.com/sushimist-menu/sushimist_menu.git/archive/refs/heads/main.zip
+    
+    echo "Extracting repository..."
+    # Extract the zip file. The directory name inside the zip will be 'sushimist_menu-main'
+    unzip sushimist-menu-temp.zip -d ./temp-menu-extracted
     
     echo "Copying config file..."
-    cp ./temp-menu-repo/config.ts ./src/config.ts
+    # Adjust the source path based on the extracted directory name
+    cp ./temp-menu-extracted/sushimist_menu-main/config.ts ./src/config.ts
     
     echo "Copying assets..."
     mkdir -p ./src/assets/menu
-    cp -r ./temp-menu-repo/assets/menu/* ./src/assets/menu/
+    # Adjust the source path based on the extracted directory name
+    cp -r ./temp-menu-extracted/sushimist_menu-main/assets/menu/* ./src/assets/menu/
     
-    echo "Cleaning up temporary repository clone..."
-    rm -rf ./temp-menu-repo
+    echo "Cleaning up temporary files..."
+    rm -rf ./temp-menu-extracted
+    rm sushimist-menu-temp.zip
 
     echo "Starting main build command..."
     npm run build
