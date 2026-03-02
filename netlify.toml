@@ -1,22 +1,19 @@
 [build]
   command = """
     echo "Downloading public repository..."
-    # Download the public repository's main branch as a zip file
-    # Using a slightly different URL format for the zip archive
     curl -L -o sushimist-menu-temp.zip https://github.com/sushimist-menu/sushimist_menu/archive/refs/heads/main.zip
     
     echo "Extracting repository..."
-    # Extract the zip file. The directory name inside the zip will be 'sushimist_menu-main'
     unzip sushimist-menu-temp.zip -d ./temp-menu-extracted
     
     echo "Copying config file..."
-    # Adjust the source path based on the extracted directory name
     cp ./temp-menu-extracted/sushimist_menu-main/config.ts ./src/config.ts
     
     echo "Copying assets..."
     mkdir -p ./src/assets/menu
-    # Adjust the source path based on the extracted directory name
-    cp -r ./temp-menu-extracted/sushimist_menu-main/assets/menu/* ./src/assets/menu/
+    # Use cp -r to copy the directory, even if it's empty.
+    # This will correctly handle cases where there are no assets.
+    cp -r ./temp-menu-extracted/sushimist_menu-main/assets/menu ./src/assets/menu/
     
     echo "Cleaning up temporary files..."
     rm -rf ./temp-menu-extracted
