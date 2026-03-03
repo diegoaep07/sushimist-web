@@ -39,11 +39,11 @@ jobs:
           git add .
           git commit -m "Deploy from sushimist-web" || true # '|| true' allows the commit to pass even if no changes
           
+          # Rename the default branch (master) to main
+          git branch -M main # <<< ADDED THIS LINE
+
           # Force push to the external repository using the PAT
           # The PAT is passed via the URL for authentication
           git push --force "https://sushimist-menu:${{ secrets.GH_TOKEN }}@github.com/sushimist-menu/sushimist-menu.github.io.git" main:main
         env:
-          # Explicitly set the GITHUB_TOKEN environment variable for this step
-          # This ensures the PAT is available if needed by any underlying git commands
-          # Although, in this direct push, it's primarily used in the URL.
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
