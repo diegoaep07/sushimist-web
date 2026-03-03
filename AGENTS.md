@@ -10,7 +10,7 @@ This document provides essential information for agentic coding agents operating
   - `src/config.ts`: Central configuration (SITE_CONFIG and MENU).
   - `src/pages/`: Main application routes (index, menu, cart).
   - `src/components/`: Reusable Astro components.
-  - `src/styles/global.css`: Global CSS variables and utility classes.
+  - `src/layouts/Layout.astro`: Main layout component containing global styles.
 
 ## 2. Commands & Workflow
 Currently, there are no specific linting or testing frameworks configured.
