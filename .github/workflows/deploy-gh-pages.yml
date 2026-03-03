@@ -28,12 +28,22 @@ jobs:
         run: npm run deploy:build
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3 # Action for deploying to GitHub Pages
-        with:
-          github_token: ${{ secrets.GH_TOKEN }} # Uses the PAT from diegoaep07 for authentication
-          publish_dir: ./dist # The output directory of your Astro build
-          external_repository: sushimist-menu/sushimist-menu.github.io # Target repo: sushimist-menu's public Pages repo
-          publish_branch: main # The branch in sushimist-menu.github.io to push to (must match GitHub Pages config)
-          keep_files: false # Overwrite existing files in the publish_branch
-          user_name: 'github-actions[bot]' # Recommended for GitHub Actions
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+        run: |
+          # Navigate to the built output directory
+          cd dist
+
+          # Initialize Git in the dist directory
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Deploy from sushimist-web" || true # '|| true' allows the commit to pass even if no changes
+          
+          # Force push to the external repository using the PAT
+          # The PAT is passed via the URL for authentication
+          git push --force "https://sushimist-menu:${{ secrets.GH_TOKEN }}@github.com/sushimist-menu/sushimist-menu.github.io.git" main:main
+        env:
+          # Explicitly set the GITHUB_TOKEN environment variable for this step
+          # This ensures the PAT is available if needed by any underlying git commands
+          # Although, in this direct push, it's primarily used in the URL.
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
