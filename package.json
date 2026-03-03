@@ -7,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy:build": "echo \"Downloading public repository...\" && curl -L -o sushimist-menu-temp.zip https://github.com/sushimist-menu/sushimist_menu/archive/refs/heads/main.zip && echo \"Extracting repository...\" && unzip sushimist-menu-temp.zip -d ./temp-menu-extracted && echo \"Contents of extracted directory:\" && ls -R ./temp-menu-extracted/sushimist_menu-main && echo \"Copying config file...\" && cp ./temp-menu-extracted/sushimist_menu-main/config.ts ./src/config.ts && echo \"Cleaning up temporary files...\" && rm -rf ./temp-menu-extracted && rm sushimist-menu-temp.zip && echo \"Starting main build command...\" && npm run build"
+    "deploy:build": "echo \"Downloading public repository...\" && curl -L -o sushimist-menu-temp.zip https://github.com/sushimist-menu/sushimist_menu/archive/refs/heads/main.zip && echo \"Extracting repository...\" && unzip sushimist-menu-temp.zip -d ./temp-menu-extracted && echo \"Contents of extracted directory:\" && ls -R ./temp-menu-extracted/sushimist_menu-main && echo \"Copying config file...\" && cp ./temp-menu-extracted/sushimist_menu-main/config.ts ./src/config.ts && echo \"Cleaning up temporary files...\" && rm -rf ./temp-menu-extracted && rm sushimist-menu-temp.zip && echo \"Starting main build command...\" && npm run build && echo \"Contents of dist directory after build:\" && ls -R dist"
   },
   "dependencies": {
     "astro": "^5.16.15"
