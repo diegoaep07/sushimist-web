@@ -1,32 +1,39 @@
 name: Deploy to GitHub Pages
-    on:
-      push:
-        branches:
-          - main # The branch in sushimist-web that triggers the deploy
-    jobs:
-      build-and-deploy:
-        runs-on: ubuntu-latest # Standard GitHub Actions runner
-        steps:
-          - name: Checkout sushimist-web repository
-            uses: actions/checkout@v4 # Clones diegoaep07/sushimist-web
-          - name: Set up Node.js
-            uses: actions/setup-node@v4
-            with:
-              node-version: '20' # Specify your Node.js version (e.g., '18', '20', '22')
-              cache: 'npm' # Enable npm package caching
-          - name: Install dependencies
-            run: npm ci # Use npm ci for clean installs in CI environments
-          - name: Run custom deploy build script
-            # This executes the 'deploy:build' script from package.json,
-            # which includes fetching config/assets, building, and cleanup.
-            run: npm run deploy:build
-          - name: Deploy to GitHub Pages
-            uses: peaceiris/actions-gh-pages@v3 # Action for deploying to GitHub Pages
-            with:
-              github_token: ${{ secrets.GH_TOKEN }} # Uses the PAT from diegoaep07 for authentication
-              publish_dir: ./dist # The output directory of your Astro build
-              external_repository: sushimist-menu/sushimist-menu.github.io # Target repo: sushimist-menu's public Pages repo
-              publish_branch: main # The branch in sushimist-menu.github.io to push to (must match GitHub Pages config)
-              keep_files: false # Overwrite existing files in the publish_branch
-              user_name: 'github-actions[bot]' # Recommended for GitHub Actions
-              user_email: 'github-actions[bot]@users.noreply.github.com'
+
+on:
+  push:
+    branches:
+      - main # The branch in sushimist-web that triggers the deploy
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Standard GitHub Actions runner
+
+    steps:
+      - name: Checkout sushimist-web repository
+        uses: actions/checkout@v4 # Clones diegoaep07/sushimist-web
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Specify your Node.js version (e.g., '18', '20', '22')
+          cache: 'npm' # Enable npm package caching
+
+      - name: Install dependencies
+        run: npm ci # Use npm ci for clean installs in CI environments
+
+      - name: Run custom deploy build script
+        # This executes the 'deploy:build' script from package.json,
+        # which includes fetching config/assets, building, and cleanup.
+        run: npm run deploy:build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3 # Action for deploying to GitHub Pages
+        with:
+          github_token: ${{ secrets.GH_TOKEN }} # Uses the PAT from diegoaep07 for authentication
+          publish_dir: ./dist # The output directory of your Astro build
+          external_repository: sushimist-menu/sushimist-menu.github.io # Target repo: sushimist-menu's public Pages repo
+          publish_branch: main # The branch in sushimist-menu.github.io to push to (must match GitHub Pages config)
+          keep_files: false # Overwrite existing files in the publish_branch
+          user_name: 'github-actions[bot]' # Recommended for GitHub Actions
+          user_email: 'github-actions[bot]@users.noreply.github.com'
