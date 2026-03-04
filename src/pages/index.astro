@@ -8,9 +8,7 @@ import { SITE_CONFIG } from '../config';
   <StoreStatus />
   <section class="landing-hero">
     <div class="container">
-      <div class="logo-container">
-        <img src="/images/sushi-mist-logo.svg" alt="SUSHI MIST" class="sushi-mist-logo"/>
-      </div>
+      <h1 class="restaurant-name">SUSHI MIST</h1>
       <p class="tagline">{SITE_CONFIG.description}</p>
       <a href="/menu" class="btn-primary">Ver Nuestro Menú</a>
     </div>
@@ -53,7 +51,7 @@ import { SITE_CONFIG } from '../config';
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/images/sushi-mist-hero-bg.svg'); /* Replace with actual image path */
+
     background-size: cover;
     background-position: center;
     opacity: 0.3; /* Adjust as needed */
@@ -75,8 +73,10 @@ import { SITE_CONFIG } from '../config';
     margin: 0 auto;
   }
 
-  .landing-hero h1 {
-    display: none; /* Hide the h1 tag as the logo image will display the name */
+  .restaurant-name {
+    font-size: var(--h1-size);
+    color: var(--primary);
+    margin-bottom: var(--space-sm);
   }
 
   .tagline {
