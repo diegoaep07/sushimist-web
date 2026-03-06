@@ -3,6 +3,9 @@ on:
   repository_dispatch:
     types: [update_from_client]
 
+permissions:
+  contents: write
+
 jobs:
   trigger_railway:
     runs-on: ubuntu-latest
