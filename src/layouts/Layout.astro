@@ -1,5 +1,6 @@
 ---
 import { SITE_CONFIG } from '../config';
+import '../styles/global.css'
 import Footer from '../components/Footer.astro';
 
 interface Props {
@@ -109,7 +110,5 @@ const { title = SITE_CONFIG.name } = Astro.props;
 			// Initial check
 			updateCartCount();
 		</script>
-
-import '../styles/global.css';
 	</body>
 </html>
