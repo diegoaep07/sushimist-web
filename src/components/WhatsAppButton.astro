@@ -28,11 +28,11 @@ const { className = '' } = Astro.props;
       }
 
       const itemsList = cart.map(item => item.name).join(', ');
-      let message = `Hi, I want to order this: ${itemsList}.`;
+      let message = `Hola, quiero ordenar esto: ${itemsList}.`;
       
-      message += `\n\n📍 Delivery Address: ${address}`;
+      message += `\n\n📍 Mi Dirección: ${address}`;
       if (instructions) {
-        message += `\n\n📝 Note: ${instructions}`;
+        message += `\n\n📝 Nota: ${instructions}`;
       }
       
       const encodedMessage = encodeURIComponent(message);
