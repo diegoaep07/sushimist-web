@@ -1,0 +1,20 @@
+name: Recibir señal y actualizar
+on:
+  repository_dispatch:
+    types: [update_from_client]
+
+jobs:
+  trigger_railway:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Crear commit de actualización
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          echo "Última actualización: $(date)" > last-update.txt
+          git add last-update.txt
+          git commit -m "chore: actualización automática de menú"
+          git push
