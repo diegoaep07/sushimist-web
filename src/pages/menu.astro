@@ -3,12 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import FoodCard from '../components/FoodCard.astro';
 import { SITE_CONFIG, MENU } from '../config';
 
-// Group menu items by category in the frontmatter to avoid template parsing issues
-const groupedMenu = MENU.reduce((acc, item) => {
+// Filter available items and group by category in the frontmatter to avoid template parsing issues
+const availableItems = MENU.filter((item) => item.availability);
+const groupedMenu = availableItems.reduce((acc, item) => {
   if (!acc[item.category]) acc[item.category] = [];
   acc[item.category].push(item);
   return acc;
-}, {} as Record<string, typeof MENU>);
+}, {} as Record<string, typeof availableItems>);
 ---
 
 <Layout title={SITE_CONFIG.name}>
