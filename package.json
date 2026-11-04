@@ -10,6 +10,12 @@
     "deploy:build": "echo \"Downloading public repository...\" && curl -L -o sushimist-menu-temp.zip https://github.com/sushimist-menu/sushimist_menu/archive/refs/heads/main.zip && echo \"Extracting repository...\" && unzip sushimist-menu-temp.zip -d temp-menu-extracted && echo \"Contents of extracted directory:\" && ls && cp temp-menu-extracted/sushimist_menu-main/config.ts src/config.ts && rm -rf src/assets && cp -r temp-menu-extracted/sushimist_menu-main/assets src/ && echo \"Cleaning up temporary files...\" && rm -rf ./temp-menu-extracted && rm sushimist-menu-temp.zip && echo \"Starting main build command...\" && npm run build"
   },
   "dependencies": {
-    "astro": "^5.16.15"
+    "@astrojs/react": "^7.1.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "astro": "^7.4.2",
+    "decap-cms-app": "^3.17.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   }
 }
