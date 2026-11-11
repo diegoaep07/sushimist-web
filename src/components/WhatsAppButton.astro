@@ -9,7 +9,7 @@ const { className = '' } = Astro.props;
 ---
 
 <button id="whatsapp-order-btn" class={`order-btn ${className}`}>
-  Order via WhatsApp
+  Ordenar por WhatsApp
 </button>
 
 <script define:vars={{ whatsappNumber: SITE_CONFIG.whatsappNumber }}>
@@ -21,14 +21,18 @@ const { className = '' } = Astro.props;
       const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
       const address = sessionStorage.getItem('delivery_address') || '';
       const instructions = sessionStorage.getItem('special_instructions') || '';
-      
+      let total = 0 
+
       if (cart.length === 0) {
         alert('Your cart is empty!');
         return;
       }
-
-      const itemsList = cart.map(item => item.name).join(', ');
-      let message = `Hola, quiero ordenar esto: ${itemsList}.`;
+      
+      cart.forEach((item) => {
+        total+=(item.cant*item.price)
+      })
+      const itemsList = cart.map(item => `${item.cant} ${item.name}`).join(', ');
+      let message = `Hola, quiero ordenar esto: ${itemsList}. Total: ${total}`;
       
       message += `\n\n📍 Mi Dirección: ${address}`;
       if (instructions) {
@@ -53,16 +57,30 @@ const { className = '' } = Astro.props;
 
 <style>
   .order-btn {
-    display: block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     width: 100%;
     padding: 1rem;
-    background: #25d366; /* WhatsApp Green */
+    background: #25d366;
     color: white;
     font-weight: 700;
     font-size: 1.1rem;
     border-radius: var(--radius);
     text-align: center;
     transition: filter 0.2s;
+  }
+  
+  .order-btn::before {
+    content: "";
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    background-color: currentColor;
+    margin-right: 0.2rem;
+
+    mask: url('../assets/icons/brand-whatsapp.svg');
+    -webkit-mask: url('../assets/icons/brand-whatsapp.svg');
   }
 
   .order-btn:hover {

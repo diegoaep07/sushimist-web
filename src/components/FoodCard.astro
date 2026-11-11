@@ -1,49 +1,60 @@
 ---
 import { Image } from 'astro:assets';
 import { SITE_CONFIG } from '../config';
+import { render } from 'astro:content';
 
-interface Props {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  img?: string;
-}
+const { item } = Astro.props;
 
-const { id, name, description, price, img } = Astro.props;
+const { Content }  = await render(item)
 
-// Load all images from the menu directory
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/menu/*.{jpeg,jpg,png,gif,webp}');
-const imagePath = img ? `/src/assets/menu/${img}` : null;
+const imagePath = item.data.image ? item.data.image : null;
 const hasImage = imagePath && images[imagePath];
 ---
 
-<article class="food-card" data-id={id} data-name={name} data-price={price}>
-  <div class="card-image">
-    {hasImage ? (
-      <Image 
-        src={images[imagePath!]()} 
-        alt={name} 
-        width={400} 
-        height={225}
-        class="plate-img"
-      />
-    ) : (
-      <div class="image-placeholder">
-        <span>{name}</span>
-      </div>
-    )}
+<article class="food-card" id={item.data.id} data-id={item.data.id} data-name={item.data.name} data-price={item.data.price}>
+  <div class="card-image">	
+    <Image 
+      src={item.data.image} 
+      alt={item.data.name} 
+      width={400} 
+      height={400}
+      class="plate-img"
+    />
   </div>
   <div class="card-content">
     <div class="card-header">
-      <h3>{name}</h3>
-      <span class="price">{SITE_CONFIG.currency}{price.toLocaleString()}</span>
+      <strong class="card-name">{item.data.name}</strong>
+      <span class="price">{SITE_CONFIG.currency}{item.data.price.toLocaleString()}</span>
     </div>
-    <p>{description}</p>
-    <button class="add-to-cart-btn" data-id={id}>
-      Agregar
-    </button>
+    <div class="card-actions">
+      <button class="add-to-cart-btn" data-id={item.data.id}></button>
+    </div>
   </div>
+  <dialog class="food-card-modal" id=`modal-${item.data.id}` data-modalid={item.data.id}>
+    <div class="modal-content">
+      <button commandfor=`modal-${item.data.id}` command="close" class='close-modal'></button>
+      <Image
+        src={item.data.image}
+        alt={item.data.name}
+        class="modal-image"
+        layout='constrained'
+      />
+
+      <div class="card-content">
+        <div class="card-header">
+          <strong class="card-name">{item.data.name}</strong>
+          <span class="price">${item.data.price.toLocaleString()}</span>
+        </div>
+        <div class="card-actions">
+          <button class="modal add-to-cart-btn" data-it={item.data.id}></button>
+        </div>
+      </div>
+      <div class="modal-description">
+        <Content />
+      </div>
+    </div>
+  </dialog>
 </article>
 
 <script>
@@ -64,7 +75,20 @@ const hasImage = imagePath && images[imagePath];
         if (!id || !name || !price) return;
 
         const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
-        cart.push({ id, name, price: parseFloat(price) });
+        console.log(cart)
+        if( cart.length === 0 ){
+          cart.push({ id, name, price:parseFloat(price), cant:1 })
+        } else {
+          cart.forEach((item) => {
+            if (item.id === id) {
+              item.cant+=1
+            } else {
+              console.log(cart)
+              cart.push({ id, name, price: parseFloat(price), cant:1 })
+            }
+          })
+        }
+        // cart.push({ id, name, price: parseFloat(price), cant: 1 });
         sessionStorage.setItem('cart', JSON.stringify(cart));
 
         // Dispatch event for Layout header to update
@@ -72,7 +96,6 @@ const hasImage = imagePath && images[imagePath];
 
         // Feedback
         const originalText = target.textContent;
-        target.textContent = 'Added!';
         target.classList.add('added');
         setTimeout(() => {
           target.textContent = originalText;
@@ -89,20 +112,41 @@ const hasImage = imagePath && images[imagePath];
   
   // Re-setup if content changes (Astro transitions or dynamic loading)
   document.addEventListener('astro:page-load', setupAddToCartButtons);
+
+  // Modal Handling
+  function modalHandlingSetup() {
+    const modals = document.querySelectorAll('.food-card-modal')
+
+    modals.forEach(modal => {
+      const card = modal.closest('.food-card') as HTMLElement
+      card.querySelector('.card-image').addEventListener('click', () => {
+        modal.showModal()
+      })
+      card.querySelector('.card-header').addEventListener('click', () => {
+        modal.showModal()
+      })
+      card.querySelector('.item-content').addEventListener('click', () => {
+        modal.showModal()
+      })
+    })
+  }
+
+  modalHandlingSetup()
+  document.addEventListener('astro:page-load', modalHandlingSetup)
 </script>
 
-<style>
+<style is:global>
   .food-card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius);
+    border-radius: 1.2rem;
     overflow: hidden;
     transition: transform 0.2s ease;
   }
 
   .card-image {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
   }
@@ -131,13 +175,23 @@ const hasImage = imagePath && images[imagePath];
 
   .card-content {
     padding: var(--space-sm);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .card-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: var(--space-xs);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .card-name {
+    font-family: "belgiano";
+    font-size: 1.5rem;
   }
 
   h3 {
@@ -147,11 +201,12 @@ const hasImage = imagePath && images[imagePath];
 
   .price {
     font-weight: 700;
+    font-family: serif;
     color: var(--accent);
   }
 
-  p {
-    font-size: var(--small-size);
+  .item-content {
+    font-size: var(--body-size);
     color: var(--text-muted);
     margin-bottom: var(--space-sm);
     display: -webkit-box;
@@ -162,13 +217,32 @@ const hasImage = imagePath && images[imagePath];
 
   .add-to-cart-btn {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.55rem;
     background: var(--primary);
     color: var(--secondary);
     border-radius: var(--radius);
     font-weight: 600;
     font-size: var(--small-size);
     transition: background 0.2s;
+    display: flex;
+  }
+
+  .card-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .add-to-cart-btn::before {
+    content: "";
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+
+    mask: url('../assets/icons/plus.svg');
+    -webkit-mask: url('../assets/icons/plus.svg');
+
+    background-color: var(--pale-green);
   }
 
   .add-to-cart-btn:active {
@@ -176,6 +250,64 @@ const hasImage = imagePath && images[imagePath];
   }
 
   .add-to-cart-btn.added {
-    background: #27ae60;
+    background: #4c692c;
   }
+
+  .add-to-cart-btn.added::before {
+    mask: url('../assets/icons/check.svg');
+    -webkit-mask: url('../assets/icons/check.svg');
+  }
+
+  .food-card-modal {
+    max-width: none;
+    max-height: none;
+    box-sizing: border-box;
+    border: none;
+    width: 100vw;
+    height: 100vh;
+    padding: 0.5rem;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+  }
+
+  .food-card-modal .modal-image {
+    margin: 0.5rem auto;
+    border-radius: var(--radius);
+    object-fit: cover;
+    object-position: center;
+    width: 98%;
+    height: 18rem;
+    box-shadow: 0px 0px 0.2rem gray;
+  }
+
+  .close-modal {
+    display: block;
+    background: transparent;
+    padding: 0;
+    height: 24px;
+    width: 24px;
+  }
+
+  .close-modal:active {
+    border: none;
+  }
+
+  .close-modal::before {
+    display: inline-block;
+    content: '';
+    height: 24px;
+    width: 24px;
+
+    mask: url('../assets/icons/x.svg') no-repeat center/contain;
+    -webkit-mask: url('../assets/icons/x.svg') no-repeat center/contain;
+
+    background-color: var(--accent);
+  }
+
+  .modal-description {
+    padding-left: 1rem;
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border-color);
+  }
+
 </style>

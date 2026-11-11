@@ -4,15 +4,14 @@ import { SITE_CONFIG } from '../config';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 ---
 
-<Layout title={`Carrito - ${SITE_CONFIG.name}`}>
+<Layout title={`Carrito - ${SITE_CONFIG.name}`}> 
   <div class="container cart-page">
-    <h1>Tu Pedido</h1>
-    
-    <div id="cart-container" class="cart-items-list">
-      <p class="loading">Cargando tu carrito...</p>
-    </div>
+    <h1 class="icon-cart">Tu Pedido</h1>
 
     <div id="cart-summary" class="cart-summary" style="display: none;">
+      <div id="cart-container" class="cart-items-list">
+        <p class="loading">Cargando...</p>
+      </div>
       <div class="summary-row total-row">
         <span>Total</span>
         <span id="cart-total">$0</span>
@@ -25,22 +24,209 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
         </div>
         <div class="form-group">
           <label for="special-instructions">Instrucciones Especiales</label>
-          <textarea id="special-instructions" placeholder="Ej: Sin cebolla, tocar 4B..."></textarea>
+          <textarea id="special-instructions" placeholder="Ej: Sin cebolla, poco picante..."></textarea>
         </div>
       </div>
 
       <div class="actions">
-        <WhatsAppButton className="mt-lg disabled" />
-        <button id="clear-cart" class="clear-btn">Vaciar Carrito</button>
+        <h4 class="thanks">¡Gracias por tu compra!</h4>
+        <WhatsAppButton className="disabled" />
+        <button id="clear-cart" class="clear-btn">Vaciar carrito</button>
       </div>
     </div>
 
     <div id="empty-cart-msg" style="display: none;" class="text-center mt-lg">
-      <p>Tu carrito está vacío.</p>
+      <p>Tu carrito está vacío :(</p>
       <a href="/menu" class="browse-link">Explorar Menú</a>
     </div>
   </div>
 </Layout>
+
+<style is:global>
+  .cart-page {
+    padding: var(--space-lg) var(--space-sm);
+  }
+
+  h1 {
+    font-size: var(--h2-size);
+    margin-bottom: var(--space-lg);
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .icon-cart::before {
+    content: "";
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    margin-right: 0.2rem;
+    background-color: var(--matcha-green-darker);
+
+    mask: url('../assets/icons/shopping-cart.svg');
+    -webkit-mask: url('../assets/icons/shopping-cart.svg');
+  }
+
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-xs) 0;
+    border-top: 1px solid var(--border-color);
+    margin-bottom:0.2rem;
+  } 
+
+  .cart-item.no-top {
+    border-top: none !important;
+  }
+
+  .item-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+    align-items: center;
+    font-family: serif;
+  }
+
+  .item-info.titles {
+    font-weight: 700;
+  }
+
+  .item-info.titles .item-price {
+    color: var(--text-color);
+  }
+
+  .item-price {
+    color: var(--text-muted);
+  }
+
+  .cart-items-list:last-child {
+    border-bottom: none;
+  }
+
+  .remove-item {
+    background: transparent;
+    color: var(--accent);
+    font-size: var(--small-size);
+    font-weight: 500;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .remove-item::before {
+    content: '';
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+
+    mask: url('../assets/icons/x.svg') no-repeat center/contain;
+    -webkit-mask: url('../assets/icons/x.svg') no-repeat center/contain;
+
+    background-color: var(--accent);
+  }
+
+  .cart-summary {
+    background: var(--card-bg);
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+  }
+
+  .order-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-color);
+    border-radius: var(--radius);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .form-group label {
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: var(--body-size);
+  }
+
+  .form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  .disabled {
+    background: #ccc !important;
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .summary-row {
+    font-family: serif;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+  }
+
+  .total-row {
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-top: 2px solid var(--text-color);
+    padding-top: var(--space-sm);
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: var(--space-lg);
+  }
+
+  .thanks {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-family: serif;
+    font-weight: bolder;
+  }
+
+  .clear-btn {
+    display: block;
+    width: 100%;
+    background: transparent;
+    color: var(--text-muted);
+    margin-top: var(--space-sm);
+    font-size: var(--small-size);
+    padding: 0.5rem;
+  }
+
+  .browse-link {
+    display: inline-block;
+    margin-top: var(--space-sm);
+    padding: 0.5rem 1.5rem;
+    background: var(--primary);
+    color: var(--secondary);
+    border-radius: var(--radius);
+    font-weight: 600;
+  }
+</style>
+
 
 <script define:vars={{ currency: SITE_CONFIG.currency }}>
   function renderCart() {
@@ -65,15 +251,24 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
     summary.style.display = 'block';
 
     let total = 0;
-    container.innerHTML = cart.map((item, index) => {
-      total += item.price;
+    container.innerHTML = `
+      <div class="cart-item no-top">
+        <div class="item-info titles">
+          <span class="item-name">Producto</span>
+          <span class="item-cant">Cantidad</span>
+          <span class="item-price">Precio</span>
+        </div>
+      </div>`
+    container.innerHTML += cart.map((item, index) => {
+      total += (item.cant*item.price);
       return `
         <div class="cart-item">
           <div class="item-info">
             <span class="item-name">${item.name}</span>
+            <span class="item-cant">${item.cant}</span>
             <span class="item-price">${currency}${item.price.toLocaleString()}</span>
           </div>
-          <button class="remove-item" data-index="${index}">Eliminar</button>
+          <button class="remove-item" data-index="${index}"></button>
         </div>
       `;
     }).join('');
@@ -139,135 +334,3 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
   // Re-render on page load (Astro)
   document.addEventListener('astro:page-load', renderCart);
 </script>
-
-<style>
-  .cart-page {
-    padding: var(--space-lg) var(--space-sm);
-  }
-
-  h1 {
-    font-size: var(--h2-size);
-    margin-bottom: var(--space-lg);
-    text-align: center;
-  }
-
-  .cart-items-list {
-    margin-bottom: var(--space-lg);
-  }
-
-  .cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--space-sm) 0;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .item-info {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .item-name {
-    font-weight: 600;
-  }
-
-  .item-price {
-    font-size: var(--small-size);
-    color: var(--text-muted);
-  }
-
-  .remove-item {
-    background: transparent;
-    color: var(--accent);
-    font-size: var(--small-size);
-    font-weight: 500;
-  }
-
-  .cart-summary {
-    background: var(--card-bg);
-    padding: var(--space-md);
-    border-radius: var(--radius);
-    border: 1px solid var(--border-color);
-  }
-
-  .order-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    padding: var(--space-md);
-    background: var(--bg-color);
-    border-radius: var(--radius);
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-  }
-
-  .form-group label {
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .form-group input,
-  .form-group textarea {
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: var(--body-size);
-  }
-
-  .form-group textarea {
-    min-height: 80px;
-    resize: vertical;
-  }
-
-  :global(.order-btn.disabled) {
-    background: #ccc !important;
-    pointer-events: none;
-    opacity: 0.7;
-  }
-
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: var(--space-sm);
-  }
-
-  .total-row {
-    font-size: 1.25rem;
-    font-weight: 700;
-    border-top: 2px solid var(--text-color);
-    padding-top: var(--space-sm);
-    margin-top: var(--space-sm);
-  }
-
-  .actions {
-    margin-top: var(--space-lg);
-  }
-
-  .clear-btn {
-    display: block;
-    width: 100%;
-    background: transparent;
-    color: var(--text-muted);
-    margin-top: var(--space-sm);
-    font-size: var(--small-size);
-    padding: 0.5rem;
-  }
-
-  .browse-link {
-    display: inline-block;
-    margin-top: var(--space-sm);
-    padding: 0.5rem 1.5rem;
-    background: var(--primary);
-    color: var(--secondary);
-    border-radius: var(--radius);
-    font-weight: 600;
-  }
-</style>

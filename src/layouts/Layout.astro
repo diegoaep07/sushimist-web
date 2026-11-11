@@ -17,12 +17,13 @@ const { title = SITE_CONFIG.name } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+    <title>{title}</title>
+    <script src="https://unpkg.com/scrollreveal"></script>
 	</head>
-	<body class={Astro.url.pathname === '/' ? 'landing-page' : ''}>
+	<body class=`sr ${Astro.url.pathname === '/' ? 'landing-page' : ''}`>
 		<header class="main-header">
 			<div class="container header-content">
-				<a href="/" class="logo">{SITE_CONFIG.name}</a>
+        <a href="/" class="logo">SUSHI <span class="matcha-green">MIST</span></a>
 				<nav class="main-nav">
 					<!-- Desktop navigation -->
 						<div class="nav-links desktop-nav">
@@ -31,7 +32,7 @@ const { title = SITE_CONFIG.name } = Astro.props;
 							)}
 							{Astro.url.pathname !== '/cart' && (
 								<a href="/cart" class="cart-link">
-									Carrito (<span id="cart-count">0</span>)
+									<div id="cart-count" class="cart-counter">0</div>
 								</a>
 							)}
 						</div>
@@ -39,32 +40,34 @@ const { title = SITE_CONFIG.name } = Astro.props;
 					<!-- Hamburger menu for mobile, conditionally shown on landing page -->
 					{Astro.url.pathname === '/' && (
 						<button id="hamburger-btn" class="hamburger-btn">
-							<span class="hamburger-icon"></span>
-							<span class="hamburger-icon"></span>
-							<span class="hamburger-icon"></span>
 						</button>
 					)}
-					
-					<!-- Mobile navigation overlay -->
-					<div id="mobile-nav-overlay" class="mobile-nav-overlay">
-						<button id="close-mobile-nav" class="close-mobile-nav">&times;</button>
-						<div class="mobile-nav-links">
-							<a href="/menu" class="menu-link">Menú</a>
-							<a href="/cart" class="cart-link">
-								Carrito (<span id="mobile-cart-count">0</span>)
-							</a>
-						</div>
-					</div>
 				</nav>
 			</div>
-		</header>
+    </header>
+    <div id="mobile-nav-overlay" class="mobile-nav-overlay">
+			<button id="close-mobile-nav" class="close-mobile-nav"></button>
+			<div class="mobile-nav-links">
+				<a href="/menu" class="menu-link">Menú</a>
+				<a href="/cart" class="cart-link">
+					<span id="mobile-cart-count" class="cart-counter">0</span>
+				</a>
+			</div>
+		</div>
+
 		<main>
 			<slot />
 		</main>
 		<Footer />
 
-		<script>
-			// Basic cart count initialization
+<script>
+  ScrollReveal().reveal('*', { delay: 300, reset: true })
+  ScrollReveal().clean('.category-nav, .category-nav > *, .category-nav > * > *')
+  ScrollReveal().clean('.mobile-nav-overlay > *')
+  ScrollReveal().clean('.mobile-nav-links > *')
+  ScrollReveal().clean('.menu-link')
+  ScrollReveal().clean('.cart-link, .cart-link > *')
+  ScrollReveal().clean('.food-card-modal, .modal-content, .close-modal, .modal-image, .modal-content > .card-content, .modal-content > .card-content > .card-header, .modal-content > .card-content > .card-header > .card-name, .modal-content > .card-content > .card-header > .price, .modal-content > .card-content > .card-actions, .modal-content > .card-content > .card-actions > *, .modal-content > .modal-description, .modal-content > .modal-description >*, .modal-content > .modal-description > * > *, .modal-content > .modal-description > * > * > *')
 			function updateCartCount() {
 				const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
 				const countElement = document.getElementById('cart-count');

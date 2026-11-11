@@ -16,7 +16,7 @@ import { SITE_CONFIG } from '../config';
     const currentHour = now.getHours();
 
     if (currentHour >= openingHours.start && currentHour < openingHours.end) {
-      statusText.textContent = "● Abierto Ahora";
+      statusText.textContent = "● Abierto";
       container.classList.add('open');
       container.classList.remove('closed');
     } else {
@@ -35,26 +35,29 @@ import { SITE_CONFIG } from '../config';
 
 <style>
   .store-status {
-    position: fixed;
+    position: absolute;
     top: 5rem;
     left: 50%;
     transform: translateX(-50%);
-    padding: 0.75rem 1.5rem;
+    padding: 0.25rem 1.5rem;
     border-radius: 50px;
-    font-weight: 700;
+    font-weight: bolder;
     font-size: 0.9rem;
-    z-index: 1000;
+    z-index: 1;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
+    font-family: 'belgiano';
   }
 
   .store-status.open {
-    background: #27ae60;
-    color: white;
+    background: transparent;
+    color: var(--matcha-green);
+    border: 1px solid var(--matcha-green);
   }
 
   .store-status.closed {
-    background: #e63946;
-    color: white;
+    background: transparent;
+    color: #e63946;
+    border: 1px solid #e63946;
   }
 </style>

@@ -1,50 +1,54 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import FoodCard from '../components/FoodCard.astro';
-import { SITE_CONFIG, MENU } from '../config';
+import { SITE_CONFIG } from '../config';
+import { getCollection, render } from 'astro:content'
 
 // Filter available items and group by category in the frontmatter to avoid template parsing issues
-const availableItems = MENU.filter((item) => item.availability);
-const groupedMenu = availableItems.reduce((acc, item) => {
-  if (!acc[item.category]) acc[item.category] = [];
-  acc[item.category].push(item);
+const ALL_ITEMS = await getCollection('MENU_DATA')
+const renderedItems = await Promise.all(
+  ALL_ITEMS.map( async (item) => {
+    const { description } = await render(item)
+    return {
+      ...item,
+      description: description
+    }
+  } )
+)
+
+const availableItems = renderedItems.filter((item) => item.data.available);
+
+const groupedMenu = availableItems.reduce( (acc, item) => {
+  if (!acc[item.data.category]) acc[item.data.category] = [];
+  acc[item.data.category].push(item);
   return acc;
-}, {} as Record<string, typeof availableItems>);
+  }, {} as Record<string, typeof availableItems>);
 ---
 
 <Layout title={SITE_CONFIG.name}>
-	<section class="hero text-center">
-		<div class="container">
-			<h1>{SITE_CONFIG.name}</h1>
-			<p>{SITE_CONFIG.description}</p>
-		</div>
-	</section>
-
 	<section class="menu">
 		<div class="container">
-			<h2 class="section-title">Nuestro Menú</h2>
+      <h2 class="section-title icon-menu">Menú</h2>
+    </div>
 
 			<!-- Category Navigation -->
-			<nav class="category-nav">
+      <nav class="category-nav">
+        <div class="container">
 				{Object.keys(groupedMenu).map((category) => (
 					<a href={`#${category.toLowerCase().replace(/\s+/g, '-')}`} class="category-btn">
 						{category}
 					</a>
-				))}
+          ))}
+        </div>
 			</nav>
-			
+
+    <div class="container">
 			{Object.entries(groupedMenu).map(([category, items]) => (
 				<div id={category.toLowerCase().replace(/\s+/g, '-')} class="category-section">
 					<h3 class="category-title">{category}</h3>
 					<div class="menu-list">
 						{items.map((item) => (
-							<FoodCard 
-								id={item.id}
-								name={item.name}
-								description={item.description}
-								price={item.price}
-								img={item.img}
-							/>
+							<FoodCard item={item}/>
 						))}
 					</div>
 				</div>
@@ -70,15 +74,17 @@ const groupedMenu = availableItems.reduce((acc, item) => {
 		color: var(--text-muted);
 	}
 
-	.category-nav {
+  .category-nav {
+    font-family: 'belgiano';
 		display: flex;
 		gap: var(--space-sm);
 		overflow-x: auto;
 		padding: var(--space-sm) 0;
 		margin-bottom: var(--space-lg);
 		position: sticky;
-		top: 60px; /* Adjust based on header height */
-		background: var(--bg-color);
+		top: 0rem; /* Adjust based on header height */
+    background: var(--white);
+    backdrop-filter: blur(5px);
 		z-index: 10;
 		scrollbar-width: none; /* Hide scrollbar Firefox */
 	}
@@ -92,7 +98,7 @@ const groupedMenu = availableItems.reduce((acc, item) => {
 		background: var(--card-bg);
 		border: 1px solid var(--border-color);
 		border-radius: 50px;
-		font-size: var(--small-size);
+		font-size: var(--body-size);
 		font-weight: 600;
 		white-space: nowrap;
 		transition: all 0.2s ease;
@@ -106,27 +112,38 @@ const groupedMenu = availableItems.reduce((acc, item) => {
 
 	.menu {
 		padding: var(--space-lg) 0;
-	}
-	.section-title {
-		font-size: var(--h2-size);
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: var(--h2-size);
 		margin-bottom: var(--space-lg);
-		border-left: 4px solid var(--accent);
 		padding-left: var(--space-sm);
-	}
+  }
+
+  .icon-menu::before {
+    content: "";
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    margin-right: 0.2rem;
+    background-color: var(--dark-primary);
+
+    mask: url('../assets/icons/bowl-chopsticks.svg');
+    -webkit-mask: url('../assets/icons/bowl-chopsticks.svg');
+  }
 
 	.category-section {
-		margin-bottom: var(--space-lg);
-		scroll-margin-top: 130px; /* Prevent header/nav from covering section title */
+		margin-bottom: -1rem;
 	}
 
 	.category-title {
-		font-size: 1.25rem;
+		font-size: 1.7rem;
 		font-weight: 700;
-		color: var(--primary);
-		margin-bottom: var(--space-md);
-		text-transform: uppercase;
+    color: var(--dark-primary);
+    margin-bottom: -0.2rem;
 		letter-spacing: 1px;
-		border-bottom: 1px solid var(--border-color);
+		border-top: 1px solid var(--border-color);
 		padding-bottom: var(--space-xs);
 	}
 

@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import StoreStatus from '../components/StoreStatus.astro';
+import Recomendeds from '../components/Recomendeds.astro'
+
 import { SITE_CONFIG } from '../config';
 ---
 
@@ -8,32 +10,42 @@ import { SITE_CONFIG } from '../config';
   <StoreStatus />
   <section class="landing-hero">
     <div class="container">
-      <h1 class="restaurant-name">{SITE_CONFIG.name}</h1>
+      <span class="restaurant-category">COCINA JAPONESA</span>
+      <h1 class="restaurant-name"><span style="color: var(--green-black)">SUSHI</span> <span class="mist-shadow">MIST</span></h1>
       <p class="tagline">{SITE_CONFIG.description}</p>
-      <a href="/menu" class="btn-primary">Ver Nuestro Menú</a>
+      <a href="/menu" class="btn-primary">Ver nuestro menú</a>
     </div>
     <div class="hero-background-image"></div>
   </section>
 
+  <Recomendeds/>
+  <a href="/menu" class="btn-primary icon-arrow">Ver menú completo</a>
+
   <section class="delivery-info">
-    <div class="container">
-      <div class="info-grid">
-        <div class="info-card">
-          <h3>Horarios</h3>
-          <p>{SITE_CONFIG.openingHours.display}</p>
-        </div>
-        <div class="info-card">
-          <h3>Zona de Entrega</h3>
-          <p>{SITE_CONFIG.deliveryArea}</p>
-        </div>
-      </div>
+    <div class="info-card icon clock-icon">
+      <p>{SITE_CONFIG.openingHours.display}</p>
+    </div>
+    <div class="info-card icon bike-icon">
+      <p>{SITE_CONFIG.deliveryArea}</p>
     </div>
   </section>
 </Layout>
-
+<script>
+  ScrollReveal().reveal('.landing-hero')
+</script>
 <style>
+  .restaurant-category {
+    color: var(--matcha-green);
+    border-bottom: 1px solid var(--matcha-green);
+    font-family: 'bonveno';
+  }
+
+  .mist-shadow {
+    text-shadow: 0px 0px 1px var(--matcha-green-darker);
+  }
+
   .landing-hero {
-    min-height: 70vh;
+    min-height: 65vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -41,21 +53,22 @@ import { SITE_CONFIG } from '../config';
     text-align: center;
     background: var(--bg-color);
     padding: var(--space-lg) var(--space-sm);
-    position: relative; /* Needed for absolute positioning of background image */
-    overflow: hidden; /* Hide overflowing parts of the background image */
+    position: relative;
+    overflow: hidden;
   }
 
   .hero-background-image {
     position: absolute;
-    top: 0;
+    top: 8.2rem;
     left: 0;
     width: 100%;
     height: 100%;
 
-    background: url('../assets/hero-background.jpg');
+    background: url('../assets/hero-background.png');
     background-size: cover;
+    background-repeat: no-repeat;
     background-position: center;
-    opacity: 0.3; /* Adjust as needed */
+    opacity: 0.7;
     z-index: 0; /* Behind other content */
   }
 
@@ -69,7 +82,7 @@ import { SITE_CONFIG } from '../config';
   }
 
   .sushi-mist-logo {
-    width: 250px; /* Adjust size as needed */
+    width: 250px;
     height: auto;
     margin: 0 auto;
   }
@@ -77,11 +90,12 @@ import { SITE_CONFIG } from '../config';
   .restaurant-name {
     font-size: var(--h1-size);
     color: var(--primary);
-    margin-bottom: var(--space-sm);
+    margin-bottom: -10;
   }
 
   .tagline {
     font-size: 1.25rem;
+    font-family: 'belgiano';
     color: var(--text-muted);
     margin: 0 auto var(--space-lg) auto; /* Center the block and add bottom margin */
     max-width: 600px;
@@ -89,15 +103,41 @@ import { SITE_CONFIG } from '../config';
   }
 
   .btn-primary {
-    display: inline-block;
-    padding: 1rem 2rem;
-    background: var(--accent);
-    color: var(--secondary);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0.6rem 0.9rem;
+    max-width: 70%;
+    background: var(--white);
+    color: var(--green-black);
     border-radius: var(--radius-round);
-    font-weight: 700;
-    font-size: 1.1rem;
+    font-weight: 300;
+    font-size: 1rem;
     transition: all 0.2s ease;
     border: 1px solid transparent;
+    font-family: 'belgiano', 'abrilff';
+    margin: 0 auto;
+    backdrop-filter: blur(3px);
+  }
+
+  .btn-primary::after{
+    content: "";
+    padding: 0 0.15rem;
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    margin-right: 0.15rem;
+
+    mask: url('../assets/icons/bowl-chopsticks.svg') no-repeat center/contain;
+    -webkit-mask: url('../assets/icons/bowl-chopsticks.svg') no-repeat center/contain;
+
+    background-color: currentColor;
+  }
+
+  .btn-primary.icon-arrow::after {
+    mask: url('../assets/icons/arrow-narrow-right.svg');
+    -webkit-mask: url('../assets/icons/arrow-narrow-right.svg');
   }
 
   .btn-primary:hover {
@@ -105,17 +145,15 @@ import { SITE_CONFIG } from '../config';
     color: var(--primary);
     border: 1px solid var(--primary);
   }
+  .btn-primary:hover::before {
+    background-color: var(--primary);
+  }
 
   .delivery-info {
     padding: var(--space-lg) 0;
-    background: var(--card-bg);
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .info-grid {
-    display: grid;
-    gap: var(--space-md);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
 
   .info-card {
@@ -123,12 +161,22 @@ import { SITE_CONFIG } from '../config';
     padding: var(--space-md);
   }
 
-  .info-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: var(--space-xs);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--accent);
+  .icon::before {
+    content: "";
+    display: inline-block;
+    height:24px;
+    width:24px;
+    background-color:currentColor;
+  }
+
+  .clock-icon::before {
+    mask: url('../assets/icons/clock.svg');
+    -webkit-mask: url('../assets/icons/clock.svg');
+  }
+
+  .bike-icon::before {
+    mask: url('../assets/icons/motorbike.svg');
+    -webkit-mask: url('../assets/icons/motorbike.svg');
   }
 
   .info-card p {

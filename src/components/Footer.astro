@@ -6,13 +6,12 @@ const currentYear = new Date().getFullYear();
 <footer class="main-footer">
   <div class="container footer-content">
     <p class="footer-logo">{SITE_CONFIG.name}</p>
+    <div class="social-links">
+      <a href="#" aria-label="WhatsApp" class="social-link icon whatsapp">WhatsApp</a>
+      <a href="#" aria-label="Instagram" class="social-link icon instagram">Instagram</a>
+    </div>
     <div class="footer-brand">
       <p>&copy; {currentYear} {SITE_CONFIG.name}. Todos los derechos reservados.</p>
-    </div>
-    <div class="social-links">
-      <a href="#" aria-label="WhatsApp" class="social-link">WhatsApp</a>
-      <a href="#" aria-label="Instagram" class="social-link">Instagram</a>
-      <a href="#" aria-label="Twitter" class="social-link">Twitter</a>
     </div>
   </div>
 </footer>
@@ -21,7 +20,7 @@ const currentYear = new Date().getFullYear();
     .main-footer {
       padding: var(--space-md) 0;
       background: var(--dark-primary);
-      color: var(--secondary);
+      color: var(--pale-green);
       margin-top: var(--space-lg);
     }
 
@@ -34,10 +33,10 @@ const currentYear = new Date().getFullYear();
     }
 
     .footer-logo {
-      font-size: 1.8rem; /* Larger font size for restaurant name */
+      font-family: 'abrilff';
+      font-size: 1.8rem;
       font-weight: 700;
-      color: var(--secondary);
-      margin-bottom: var(--space-sm);
+      color: var(--bg-color);
       letter-spacing: -0.5px;
     }
 
@@ -48,14 +47,14 @@ const currentYear = new Date().getFullYear();
 
     .social-links {
       display: flex;
-      flex-direction: column; /* Stack links vertically */
-      gap: var(--space-md); /* Vertical gap between links */
-      align-items: center; /* Center links horizontally within their container */
-      justify-content: center; /* Center links vertically if they were in a row and footer-content was column */
+      flex-direction: column; 
+      gap: var(--space-md);
+      align-items: center;
+      justify-content: center; 
     }
 
     .social-link {
-      color: var(--secondary); /* Inherit footer text color */
+      color: var(--secondary);
       text-decoration: none;
       font-size: var(--small-size);
       font-weight: 500;
@@ -63,8 +62,33 @@ const currentYear = new Date().getFullYear();
     }
 
     .social-link:hover {
-      color: var(--accent); /* Accent color on hover */
-      text-decoration: underline; /* Ensure underline on hover */
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .icon {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .icon::before {
+      content: "";
+      display: inline-block;
+      height: 24px;
+      width: 24px;
+      background-color: currentColor;
+      margin-right: 0.2rem;
+    }
+
+    .whatsapp::before {
+      mask: url('../assets/icons/brand-whatsapp.svg');
+      -webkit-mask: url('../assets/icons/brand-whatsapp.svg');
+    }
+
+    .instagram::before {
+      mask: url('../assets/icons/brand-instagram.svg');
+      -webkit-mask: url('../assets/icons/brand-instagram.svg');
     }
 
     @media (min-width: 768px) {
