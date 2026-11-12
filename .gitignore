@@ -9,8 +9,6 @@ node_modules/
 
 # Unnecesary for deploy
 src/config.ts 
-src/assets/menu/
-src/content/menu_data
 
 # logs
 npm-debug.log*
