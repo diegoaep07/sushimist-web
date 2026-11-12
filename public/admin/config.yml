@@ -1,6 +1,7 @@
 backend: 
   name: github
   repo: sushimist-menu/sushimist_menu # Modificar esto cuando se haga push al repositorio oficial
+  branch: main
 
 collections:
   - name: "menu" # Used in routes, e.g., /admin/collections/blog

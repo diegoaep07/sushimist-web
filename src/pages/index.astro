@@ -11,7 +11,7 @@ import { SITE_CONFIG } from '../config';
   <section class="landing-hero">
     <div class="container">
       <span class="restaurant-category">COCINA JAPONESA</span>
-      <h1 class="restaurant-name"><span style="color: var(--green-black)">SUSHI</span> <span class="mist-shadow">MIST</span></h1>
+      <h1 class="restaurant-name"><span style="color: var(--text-color)">SUSHI</span> <span class="mist-shadow">MIST</span></h1>
       <p class="tagline">{SITE_CONFIG.description}</p>
       <a href="/menu" class="btn-primary">Ver nuestro menú</a>
     </div>
@@ -30,9 +30,7 @@ import { SITE_CONFIG } from '../config';
     </div>
   </section>
 </Layout>
-<script>
-  ScrollReveal().reveal('.landing-hero')
-</script>
+
 <style>
   .restaurant-category {
     color: var(--matcha-green);
@@ -41,7 +39,7 @@ import { SITE_CONFIG } from '../config';
   }
 
   .mist-shadow {
-    text-shadow: 0px 0px 1px var(--matcha-green-darker);
+    color: var(--matcha-green);
   }
 
   .landing-hero {
@@ -109,8 +107,8 @@ import { SITE_CONFIG } from '../config';
     align-items: center;
     padding: 0.6rem 0.9rem;
     max-width: 70%;
-    background: var(--white);
-    color: var(--green-black);
+    background: var(--btn-primary);
+    color: var(--text-color);
     border-radius: var(--radius-round);
     font-weight: 300;
     font-size: 1rem;

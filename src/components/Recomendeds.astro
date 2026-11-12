@@ -7,7 +7,7 @@ const RECOMENDEDS = ALL_PLATES.filter( (plate) => plate.data.recomended)
 ---
 <div class="recomendeds-section">
   <span class="category">ESPECIALIDADES</span>
-  <h2 class="dark-heading">FAVORITOS DE LA CASA</h2>
+  <h2 class="house-favs dark-heading">FAVORITOS DE LA CASA</h2>
   <div class="recomendeds-list">
   {
   RECOMENDEDS.map( (item) => (
@@ -37,6 +37,10 @@ const RECOMENDEDS = ALL_PLATES.filter( (plate) => plate.data.recomended)
     display: flex;
     flex-direction: column;
     width: 98%;
+  }
+
+  .house-favs {
+    font-size: 1.5rem; 
   }
 
   @media (min-width: 600px) {

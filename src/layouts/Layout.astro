@@ -20,7 +20,7 @@ const { title = SITE_CONFIG.name } = Astro.props;
     <title>{title}</title>
     <script src="https://unpkg.com/scrollreveal"></script>
 	</head>
-	<body class=`sr ${Astro.url.pathname === '/' ? 'landing-page' : ''}`>
+	<body class=` ${Astro.url.pathname === '/' ? 'landing-page' : ''}`>
 		<header class="main-header">
 			<div class="container header-content">
         <a href="/" class="logo">SUSHI <span class="matcha-green">MIST</span></a>
@@ -61,7 +61,7 @@ const { title = SITE_CONFIG.name } = Astro.props;
 		<Footer />
 
 <script>
-  ScrollReveal().reveal('*', { delay: 300, reset: true })
+  ScrollReveal().reveal('*', { delay: 200, reset: false })
   ScrollReveal().clean('.category-nav, .category-nav > *, .category-nav > * > *')
   ScrollReveal().clean('.mobile-nav-overlay > *')
   ScrollReveal().clean('.mobile-nav-links > *')

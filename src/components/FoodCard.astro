@@ -118,14 +118,12 @@ const hasImage = imagePath && images[imagePath];
     const modals = document.querySelectorAll('.food-card-modal')
 
     modals.forEach(modal => {
+      console.log(modal)
       const card = modal.closest('.food-card') as HTMLElement
       card.querySelector('.card-image').addEventListener('click', () => {
         modal.showModal()
       })
       card.querySelector('.card-header').addEventListener('click', () => {
-        modal.showModal()
-      })
-      card.querySelector('.item-content').addEventListener('click', () => {
         modal.showModal()
       })
     })
@@ -142,6 +140,7 @@ const hasImage = imagePath && images[imagePath];
     border-radius: 1.2rem;
     overflow: hidden;
     transition: transform 0.2s ease;
+    margin: 1rem;
   }
 
   .card-image {

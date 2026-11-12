@@ -28,7 +28,7 @@ const groupedMenu = availableItems.reduce( (acc, item) => {
 <Layout title={SITE_CONFIG.name}>
 	<section class="menu">
 		<div class="container">
-      <h2 class="section-title icon-menu">Menú</h2>
+      <h2 class="section-title icon-menu dark-heading">MENÚ</h2>
     </div>
 
 			<!-- Category Navigation -->
@@ -82,8 +82,8 @@ const groupedMenu = availableItems.reduce( (acc, item) => {
 		padding: var(--space-sm) 0;
 		margin-bottom: var(--space-lg);
 		position: sticky;
-		top: 0rem; /* Adjust based on header height */
-    background: var(--white);
+		top: 3.8rem; /* Adjust based on header height */
+    background: var(--secondary);
     backdrop-filter: blur(5px);
 		z-index: 10;
 		scrollbar-width: none; /* Hide scrollbar Firefox */
@@ -101,7 +101,8 @@ const groupedMenu = availableItems.reduce( (acc, item) => {
 		font-size: var(--body-size);
 		font-weight: 600;
 		white-space: nowrap;
-		transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    margin-right: 0.5rem;
 		color: var(--text-color); /* Ensure text color is applied */
 	}
 

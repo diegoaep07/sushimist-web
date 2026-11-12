@@ -16,20 +16,26 @@
 :root {
     --pale-green: #e5ffe5;
     --green-black: #0e2319;
+    --green-black-rgb: rgba(14 35 25 / 0.7);
     --matcha-green: #98af77;
+    --matcha-green-rgb: rgba(152 175 119/ 0.7);
     --matcha-green-darker: #59684b;
+    --matcha-green-darker-rgb: rgba(89 104 75 /0.7);
     --bg-light: #ebf6eb;
     --white: rgba(250 252 249 / 0.7);
   
-    --primary: var(--matcha-green);
-    --dark-primary: var(--matcha-green-darker);
-    --secondary: var(--white);
-    --accent: var(--primary); 
-    --bg-color: var(--bg-light);
-    --text-color: var(--green-black);
-    --text-muted: #555555;
-    --border-color: var(--matcha-green);
-    --card-bg: var(--white);
+    --primary: light-dark(var(--matcha-green), var(--matcha-green-darker));
+    --primary-rgb: light-dark(var(--matcha-green-rgb), var(--matcha-green-darker-rgb));
+    --dark-primary: light-dark(var(--matcha-green-darker), var(--matcha-green));
+    --secondary: light-dark(var(--white), var(--green-black-rgb));
+    --btn-primary: light-dark(var(--white), var(--matcha-green-darker-rgb));
+    --accent: var(--primary);
+    --accent-rgb: var(--primary-rgb);
+    --bg-color: light-dark(var(--bg-light), var(--green-black));
+    --text-color: light-dark(var(--green-black), var(--bg-light));
+    --text-muted: light-dark(#555555, #d0d0d0);
+    --border-color: light-dark(var(--matcha-green), var(--matcha-green-darker));
+    --card-bg: var(--bg-color);
     
     --space-xs: 0.5rem;
     --space-sm: 1rem;
@@ -54,6 +60,7 @@
 }
 
 body {
+    color-scheme: light dark;
     font-family: var(--font-main);
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -114,7 +121,7 @@ button {
 
 .main-header {
     padding: 0.7rem 0;
-    background: var(--white);
+    background: var(--secondary);
     position: sticky;
     top: 0;
     backdrop-filter: blur(5px);
@@ -153,7 +160,7 @@ button {
 
 .cart-link {
     background: var(--primary);
-    color: var(--bg-color);
+    color: var(--text-color);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -174,11 +181,12 @@ button {
 
 .menu-link {
     background: transparent;
-    color: var(--primary);
+    color: var(--text-color);
     border: 1px solid var(--primary);
     display: flex;
     flex-direction: row;
     align-items: center;
+    font-family: serif;
 }
 
 .menu-link::before {
@@ -225,7 +233,7 @@ button {
     left: -100%;
     width: 60vw;
     height: 100vh;
-    background: var(--white);
+    background: var(--secondary);
     z-index: 100;
     transition: left 0.3s ease-in-out;
     box-sizing: border-box;
