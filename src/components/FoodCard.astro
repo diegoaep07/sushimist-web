@@ -14,7 +14,9 @@ const hasImage = imagePath && images[imagePath];
 
 <article class="food-card" id={item.data.id} data-id={item.data.id} data-name={item.data.name} data-price={item.data.price}>
   <div class="card-image">	
-    <Image 
+    <Image
+      loading="lazy"
+      quality="mid"
       src={item.data.image} 
       alt={item.data.name} 
       width={400} 
@@ -35,6 +37,8 @@ const hasImage = imagePath && images[imagePath];
     <div class="modal-content">
       <button commandfor=`modal-${item.data.id}` command="close" class='close-modal'></button>
       <Image
+        loading="lazy"
+        quality="mid"
         src={item.data.image}
         alt={item.data.name}
         class="modal-image"
@@ -140,7 +144,7 @@ const hasImage = imagePath && images[imagePath];
     border-radius: 1.2rem;
     overflow: hidden;
     transition: transform 0.2s ease;
-    margin: 1rem;
+    margin: 0.5rem;
   }
 
   .card-image {

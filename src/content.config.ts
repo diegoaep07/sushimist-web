@@ -7,7 +7,6 @@ const menu_data_collection = defineCollection({
     z.object({
       id: z.string(),
       name: z.string(),
-      description: z.string(),
       category: z.string(),
       image: z.optional(image()),
       recomended: z.boolean().default(false),

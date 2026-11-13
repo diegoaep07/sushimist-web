@@ -13,12 +13,12 @@ collections:
       - { label: "Layout", name: "layout", widget: "hidden", default: "menu" }
       - { label: "ID", name: 'id', widget: "string" }
       - { label: "Nombre", name: "name", widget: "string" }
-      - { label: "Descripción", name: "description", widget: "markdown" }
+      - { label: "Descripción", name: "body", widget: "markdown" }
       - { label: "Categoría", name: "category", widget: "string" }
       - { label: "Imagen", name: "image", widget: "image" }
       - { label: "Recomendado", name: "recomended", widget: "boolean" }
       - { label: "Disponibilidad", name: "available", widget: "boolean" }
       - { label: "Precio", name: "price", widget: "number" }
 
-media_folder: "assets/menu"
-public_folder: "assets/menu"
+media_folder: "/src/assets/menu"
+public_folder: "/src/assets/menu"
