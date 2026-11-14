@@ -12,7 +12,7 @@ const { className = '' } = Astro.props;
   Ordenar por WhatsApp
 </button>
 
-<script define:vars={{ whatsappNumber: SITE_CONFIG.whatsappNumber }}>
+<script define:vars={{ whatsappNumber: SITE_CONFIG.whatsappNumber, deliveryPrice: SITE_CONFIG.deliveryPrice }}>
   function setupWhatsAppButton() {
     const btn = document.getElementById('whatsapp-order-btn');
     if (!btn) return;
@@ -21,7 +21,7 @@ const { className = '' } = Astro.props;
       const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
       const address = sessionStorage.getItem('delivery_address') || '';
       const instructions = sessionStorage.getItem('special_instructions') || '';
-      let total = 0 
+      let total = 0+deliveryPrice 
 
       if (cart.length === 0) {
         alert('Your cart is empty!');
@@ -32,7 +32,7 @@ const { className = '' } = Astro.props;
         total+=(item.cant*item.price)
       })
       const itemsList = cart.map(item => `${item.cant} ${item.name}`).join(', ');
-      let message = `Hola, quiero ordenar esto: ${itemsList}. Total: ${total}`;
+      let message = `Hola, quiero ordenar esto: ${itemsList}. Total + Entrega: ${total}`;
       
       message += `\n\n📍 Mi Dirección: ${address}`;
       if (instructions) {

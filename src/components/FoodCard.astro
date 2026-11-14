@@ -79,18 +79,22 @@ const hasImage = imagePath && images[imagePath];
         if (!id || !name || !price) return;
 
         const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
-        console.log(cart)
+        console.log(cart.length)
         if( cart.length === 0 ){
           cart.push({ id, name, price:parseFloat(price), cant:1 })
         } else {
-          cart.forEach((item) => {
-            if (item.id === id) {
-              item.cant+=1
-            } else {
-              console.log(cart)
-              cart.push({ id, name, price: parseFloat(price), cant:1 })
-            }
-          })
+          let sameElement = cart.filter((item) => item.id === id)
+          
+          if(sameElement.length === 0) {
+            cart.push({id, name, price:parseFloat(price), cant: 1})
+          } else {
+            cart.forEach((item) => {
+              if(item.id===id) {
+                item.cant++
+              }
+            })
+          }
+
         }
         // cart.push({ id, name, price: parseFloat(price), cant: 1 });
         sessionStorage.setItem('cart', JSON.stringify(cart));
@@ -122,7 +126,6 @@ const hasImage = imagePath && images[imagePath];
     const modals = document.querySelectorAll('.food-card-modal')
 
     modals.forEach(modal => {
-      console.log(modal)
       const card = modal.closest('.food-card') as HTMLElement
       card.querySelector('.card-image').addEventListener('click', () => {
         modal.showModal()
@@ -189,7 +192,7 @@ const hasImage = imagePath && images[imagePath];
     align-items: baseline;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 90%;
   }
 
   .card-name {

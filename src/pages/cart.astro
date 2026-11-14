@@ -13,7 +13,7 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
         <p class="loading">Cargando...</p>
       </div>
       <div class="summary-row total-row">
-        <span>Total</span>
+        <span>Total + Entrega({SITE_CONFIG.currency}{SITE_CONFIG.deliveryPrice})</span>
         <span id="cart-total">$0</span>
       </div>
       
@@ -230,7 +230,7 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
 </style>
 
 
-<script define:vars={{ currency: SITE_CONFIG.currency }}>
+<script define:vars={{ currency: SITE_CONFIG.currency, deliveryPrice: SITE_CONFIG.deliveryPrice }}>
   function renderCart() {
     const container = document.getElementById('cart-container');
     const summary = document.getElementById('cart-summary');
@@ -275,7 +275,7 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
       `;
     }).join('');
 
-    totalEl.textContent = `${currency}${total.toLocaleString()}`;
+    totalEl.textContent = `${currency}${(total+deliveryPrice).toLocaleString()}`;
 
     // Handle form input and button activation
     const addressInput = document.getElementById('delivery-address');

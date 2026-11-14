@@ -15,7 +15,7 @@ const { title = SITE_CONFIG.name } = Astro.props;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/png" href="/favicon.png" />
+		<link rel="icon" type="image/png" href="/favicon.jpg" />
 		<meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <script src="https://unpkg.com/scrollreveal"></script>
@@ -61,13 +61,13 @@ const { title = SITE_CONFIG.name } = Astro.props;
 		<Footer />
 
 <script>
-  ScrollReveal().reveal('*', { delay: 200, reset: false })
-  ScrollReveal().clean('.category-nav, .category-nav > *, .category-nav > * > *')
-  ScrollReveal().clean('.mobile-nav-overlay > *')
-  ScrollReveal().clean('.mobile-nav-links > *')
-  ScrollReveal().clean('.menu-link')
-  ScrollReveal().clean('.cart-link, .cart-link > *')
-  ScrollReveal().clean('.food-card-modal, .modal-content, .close-modal, .modal-image, .modal-content > .card-content, .modal-content > .card-content > .card-header, .modal-content > .card-content > .card-header > .card-name, .modal-content > .card-content > .card-header > .price, .modal-content > .card-content > .card-actions, .modal-content > .card-content > .card-actions > *, .modal-content > .modal-description, .modal-content > .modal-description >*, .modal-content > .modal-description > * > *, .modal-content > .modal-description > * > * > *')
+  // ScrollReveal().reveal('*', { delay: 200, reset: false })
+  // ScrollReveal().clean('.category-nav, .category-nav > *, .category-nav > * > *')
+  // ScrollReveal().clean('.mobile-nav-overlay > *')
+  // ScrollReveal().clean('.mobile-nav-links > *')
+  // ScrollReveal().clean('.menu-link')
+  // ScrollReveal().clean('.cart-link, .cart-link > *')
+  // ScrollReveal().clean('.food-card-modal, .modal-content, .close-modal, .modal-image, .modal-content > .card-content, .modal-content > .card-content > .card-header, .modal-content > .card-content > .card-header > .card-name, .modal-content > .card-content > .card-header > .price, .modal-content > .card-content > .card-actions, .modal-content > .card-content > .card-actions > *, .modal-content > .modal-description, .modal-content > .modal-description >*, .modal-content > .modal-description > * > *, .modal-content > .modal-description > * > * > *')
 			function updateCartCount() {
 				const cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
 				const countElement = document.getElementById('cart-count');
