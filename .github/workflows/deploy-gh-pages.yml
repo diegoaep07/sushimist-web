@@ -2,9 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main # The branch in sushimist-web that triggers the deploy
-  worflow_dispatch: 
+    branches: [main] # The branch in sushimist-web that triggers the deploy
+  workflow_dispatch: 
 
 jobs:
   build-and-deploy:
