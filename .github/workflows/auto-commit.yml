@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   trigger_railway:
@@ -13,11 +14,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Crear commit de actualización
-        run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
-          echo "Última actualización: $(date)" > last-update.txt
-          git add last-update.txt
-          git commit -m "chore: actualización automática de menú"
-          git push
+      - name: Disparar Build y Push
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTO_BUILD }}
+        run: gh workflow run deploy-gh-pages.yml --ref main
+      #
+      # - name: Crear commit de actualización
+      #   run: |
+      #     git config --global user.name "GitHub Action"
+      #     git config --global user.email "action@github.com"
+      #     echo "Última actualización: $(date)" > last-update.txt
+      #     git add last-update.txt
+      #     git commit -m "chore: actualización automática de menú"
+      #     git push 
