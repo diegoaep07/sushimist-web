@@ -4,9 +4,10 @@ curl -L -o sushimist-menu-temp.zip https://github.com/sushimist-menu/sushimist_m
 echo "Extracting Content..."
 unzip sushimist-menu-temp.zip -d temp-menu-extracted  
 
-cp -r temp-menu-extracted/sushimist_menu-main/menu_data/* src/content/menu_data
+rm -rf ./src/content/menu_data/*
+cp -r temp-menu-extracted/sushimist_menu-main/menu_data/* ./src/content/menu_data
 
-rm -rf src/assets/menu/*
+rm -rf ./src/assets/menu/*
 cp -r temp-menu-extracted/sushimist_menu-main/src/assets/menu/* src/assets/menu/ 
 cp temp-menu-extracted/sushimist_menu-main/config.ts src/
 echo "Cleaning up temporary content files..."
